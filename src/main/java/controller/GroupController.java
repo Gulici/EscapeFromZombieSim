@@ -2,7 +2,7 @@ package controller;
 
 import core.Position;
 
-public class AgentController implements EntityController {
+public class GroupController implements EntityController {
 
     private boolean up;
     private boolean right;
