@@ -17,7 +17,7 @@ public abstract class Agent extends Entity{
     public Agent(EntityController entityController) {
         super();
         this.entityController = entityController;
-        this.motion = new Motion(6);
+        this.motion = new Motion(8);
         this.setSize(new Size(12,12));
     }
     @Override
@@ -30,12 +30,17 @@ public abstract class Agent extends Entity{
         motion.update(entityController);
     }
     protected void handleCollision(Entity other){
-        if(other instanceof Wall){
-            motion.stop(willCollideX(other.getCollisionBox()),willCollideY(other.getCollisionBox()));
+        if(other instanceof Wall ) {
+            motion.stop(willCollideX(other.getCollisionBox()), willCollideY(other.getCollisionBox()));
         }
+
+//        if(other instanceof Agent) {
+//            motion.stop(true,true);
+//        }
     }
     protected void handleCollisions(Sim sim){
         List<Entity> collidingEntities = sim.getCollidingEntities(this);
+
         for(Entity other : collidingEntities){
             this.handleCollision(other);
         }
@@ -57,12 +62,10 @@ public abstract class Agent extends Entity{
         predictPosition.apply(motion);
 
         return new CollisionBox(
-                new Rectangle(
-                        predictPosition.intX(),
-                        predictPosition.intY(),
-                        this.size.getWidth(),
-                        this.size.getHeight()
-                )
+                predictPosition.getX(),
+                predictPosition.getY(),
+                getSize().getWidth(),
+                getSize().getHeight()
         );
     }
 
@@ -70,26 +73,23 @@ public abstract class Agent extends Entity{
         Position positionPredictX = Position.copyOf(position);
         positionPredictX.applyX(motion);
 
-        CollisionBox predictCollisionBox = new CollisionBox(
-                new Rectangle(positionPredictX.intX(),
-                        positionPredictX.intY(),
-                        size.getWidth(),
-                        size.getHeight()
-                )
+        CollisionBox predictCollisionBox = new CollisionBox (
+                positionPredictX.getX(),
+                positionPredictX.getY(),
+                size.getWidth(),
+                size.getHeight()
         );
-
         return predictCollisionBox.collidesWith(otherBox);
     }
     public boolean willCollideY(CollisionBox otherBox){
         Position positionPredictY = Position.copyOf(position);
         positionPredictY.applyY(motion);
 
-        CollisionBox predictCollisionBox = new CollisionBox(
-                new Rectangle(positionPredictY.intX(),
-                        positionPredictY.intY(),
-                        size.getWidth(),
-                        size.getHeight()
-                )
+        CollisionBox predictCollisionBox = new CollisionBox (
+                positionPredictY.getX(),
+                positionPredictY.getY(),
+                size.getWidth(),
+                size.getHeight()
         );
 
         return predictCollisionBox.collidesWith(otherBox);

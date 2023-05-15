@@ -5,8 +5,8 @@ public class SimLoop implements Runnable {
     Thread thread;
     private final int TPS = 60;
 
-    public SimLoop(){
-        sim = new Sim();
+    public SimLoop(int numberOfAgents){
+        sim = new Sim(numberOfAgents);
         System.out.println("init loop");
         startThread();
 

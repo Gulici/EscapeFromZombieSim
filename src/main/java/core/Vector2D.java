@@ -21,28 +21,11 @@ public class Vector2D {
         x *= speed;
         y *= speed;
     }
-
-    public static Vector2D copyOf(Vector2D vector) {
-        return new Vector2D(vector.getX(), vector.getY());
-    }
-
-    public static Vector2D directionBetweenPositions(Position start, Position end) {
-        Vector2D direction = new Vector2D(start.getX() - end.getX(), start.getY() - end.getY());
-        direction.normalize();
-
-        return direction;
-    }
-
     public double getX() {
         return x;
     }
 
     public double getY() {
         return y;
-    }
-
-    public void add(Vector2D vector) {
-        x += vector.getX();
-        y += vector.getY();
     }
 }

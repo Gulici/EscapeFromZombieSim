@@ -33,16 +33,10 @@ public class AgentController implements EntityController {
         double deltaX = target.getX() - current.getX();
         double deltaY = target.getY() - current.getY();
 
-        up = deltaY < 0; //&& Math.abs(deltaY) > Position.PROXIMITY_RANGE;
-        right = deltaX > 0; //&& Math.abs(deltaX) > Position.PROXIMITY_RANGE;
-        down = deltaY > 0; //&& Math.abs(deltaY) > Position.PROXIMITY_RANGE;
-        left = deltaX < 0; // Math.abs(deltaX) > Position.PROXIMITY_RANGE;
-
-//        if(up) System.out.println("up");
-//        if(right) System.out.println("right");
-//        if(down) System.out.println("down");
-//        if(left) System.out.println("left");
-
+        up = deltaY < 0;
+        right = deltaX > 0;
+        down = deltaY > 0;
+        left = deltaX < 0;
     }
 
     public void stop() {

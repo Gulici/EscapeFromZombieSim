@@ -2,6 +2,7 @@ import sim.SimLoop;
 
 public class Main {
     public static void main(String[] args) {
-        SimLoop simLoop = new SimLoop();
+        int numberOfAgents = 100;
+        SimLoop simLoop = new SimLoop(numberOfAgents);
     }
 }

@@ -6,7 +6,7 @@ import sim.Map;
 
 import java.util.ArrayList;
 
-public class Dijskra {
+public class Dijkstra {
     ArrayList<Node> OPEN = new ArrayList<>();
     ArrayList<Node> CLOSED = new ArrayList<>();
     ArrayList<Node> TEMP = new ArrayList<>();
@@ -16,7 +16,7 @@ public class Dijskra {
     final private int colNum;
     final private int rowNum;
     final private int nodeSize;
-    public Dijskra(Map map){
+    public Dijkstra(Map map){
         this.colNum = map.getColNum();
         this.rowNum = map.getRowNum();
         this.nodeList = map.getNodeList();

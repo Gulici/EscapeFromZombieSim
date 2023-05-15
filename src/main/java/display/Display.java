@@ -7,20 +7,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Display extends JFrame {
-
-    private Canvas canvas;
-    private Renderer renderer;
-    private SimPanel simPanel;
-
-
-
+    private final SimPanel simPanel;
     public Display(Input input, Sim sim){
         setTitle("title");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-        //addKeyListener(input);
 
-        renderer = new Renderer();
+        Renderer renderer = new Renderer();
         simPanel = new SimPanel(sim, input);
 
         add(simPanel);

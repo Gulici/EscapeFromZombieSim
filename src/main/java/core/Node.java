@@ -4,31 +4,37 @@ import java.awt.*;
 
 public class Node {
     private final Size size;
+    private int col;
+    private int row;
     private Position position = new Position(0,0);
     private boolean traversable = true;
     private boolean target = false;
     private Node parent;
-    private double vCost;
+    private double gCost;
     private double hCost;
-    private double totalCost;
-    private int col;
-    private int row;
+    private double fCost;
 
     public Node(int width, int height) {
         size = new Size(width, height);
     }
+    public Node(int sideLength){
+        size = new Size(sideLength,sideLength);
+    }
+
+    public Position getCenterPosition(){
+        double x = position.getX() + (double) size.getWidth()/2;
+        double y = position.getY() + (double) size.getHeight()/2;
+
+        return new Position(x,y);
+    }
     public void draw(Graphics2D g2){
-            g2.setColor(Color.darkGray);
-            g2.drawRect(position.intX(), position.intY(), size.getWidth(), size.getHeight());
+//            g2.setColor(Color.darkGray);
+//            g2.drawRect(position.intX(), position.intY(), size.getWidth(), size.getHeight());
 
             if(target){
                 g2.setColor(Color.orange);
                 g2.fillRect(position.intX(), position.intY(), size.getWidth(), size.getHeight());
             }
-//            if(!traversable){
-//                g2.setColor(Color.red);
-//                g2.fillRect(position.intX(), position.intY(), size.getWidth(), size.getHeight());
-//            }
     }
 
     public void setPosition(int col, int row) {
@@ -56,17 +62,16 @@ public class Node {
         return parent;
     }
 
-    public double getVCost() {
-        return vCost;
+    public double getGCost() {
+        return gCost;
     }
 
-    public void setVCost(double vCost) {
-        this.vCost = vCost;
+    public void setGCost(double vCost) {
+        this.gCost = vCost;
     }
 
     public double getHCost() {
         return hCost;
-
     }
 
     public int getCol() {
@@ -81,16 +86,12 @@ public class Node {
         this.hCost = hCost;
     }
 
-    public double getTotalCost() {
-        return totalCost;
+    public double getFCost() {
+        return fCost;
     }
 
-    public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
-    }
-
-    public void setWall() {
-        setTraversable(false);
+    public void setFCost() {
+        this.fCost = gCost + hCost;
     }
 
     public Position getPosition() {

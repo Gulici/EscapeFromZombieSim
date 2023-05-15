@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 
 public class SimPanel extends JPanel {
-
     Sim sim;
     Renderer renderer;
     Dimension dimension;

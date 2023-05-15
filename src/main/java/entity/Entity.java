@@ -24,14 +24,17 @@ public abstract class Entity {
     public CollisionBox getCollisionBox() {
         {
             return new CollisionBox(
-                    new Rectangle(
-                            position.intX(),
-                            position.intY(),
-                            size.getWidth(),
-                            size.getHeight()
-                    )
+                    position.getX(),
+                    position.getY(),
+                    size.getWidth(),
+                    size.getHeight()
             );
         }
+    }
+    public Position getCenterPosition() {
+        int x = getPosition().intX() + getSize().getWidth()/2;
+        int y = getPosition().intY() + getSize().getHeight()/2;
+        return new Position(x,y);
     }
 
     public void setPosition(Position position) {

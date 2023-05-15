@@ -1,6 +1,7 @@
 package sim;
 
-import ai.Dijskra;
+import ai.AStar;
+import ai.Dijkstra;
 import core.MapReader;
 import core.Node;
 import core.Position;
@@ -19,13 +20,16 @@ public class Map {
     private final ArrayList<ArrayList<Node>> nodeList;
     private ArrayList<Wall> walls;
     private final MapReader mapReader = new MapReader(colNum,rowNum);
-    private Dijskra pathfinder;
+    private Dijkstra pathfinder;
+    private AStar aStar;
     private Position targetPosition;
 
     public Map(Sim sim){
         nodeList = new ArrayList<>();
+
         for(int row = 0; row < rowNum; row++){
             ArrayList<Node> nodeRow = new ArrayList<>();
+
             for (int col = 0; col < colNum; col++){
                 Node node = new Node(tileSize,tileSize);
                 node.setPosition(col, row);
@@ -33,10 +37,12 @@ public class Map {
             }
             nodeList.add(nodeRow);
         }
+
         mapReader.readFromTxt("/map/map.txt");
         createWalls(sim);
         setRandomTarget();
-        pathfinder = new Dijskra(this);
+        pathfinder = new Dijkstra(this);
+        aStar = new AStar(this);
     }
 
     public void createWalls(Sim sim){
@@ -58,7 +64,6 @@ public class Map {
                     int y = position.intY();
 
                     if (node.getPosition().intX() == x && node.getPosition().intY() == y) {
-                        node.setWall();
                         node.setTraversable(false);
                         Wall wall = new Wall();
                         wall.setPosition(position);
@@ -73,32 +78,52 @@ public class Map {
         return pathfinder.findPath(start, target);
     }
 
+    public List<Position> findPathAS(Position start, Position target) {
+        aStar.findPath(start,target);
+        return aStar.getPath();
+    }
+
     public void draw(Graphics2D graphics2D){
         nodeList.forEach(nodes -> nodes.forEach(node -> node.draw(graphics2D)));
     }
 
     public void setRandomTarget(){
         boolean found = false;
+
         while (!found){
             int row = (int)(Math.random() * rowNum);
             int col = (int)(Math.random() * colNum);
+
             if(row < rowNum && col < colNum){
                 Node node = nodeList.get(row).get(col);
                 if(node.isTraversable()){
                     node.setTarget(true);
-                    setTargetPosition(node.getPosition());
+                    setTargetPosition(node.getCenterPosition());
                     found = true;
                 }
             }
         }
     }
 
-    public ArrayList<Wall> getWalls() {
-        return walls;
+    public Position getRandomPosition() {
+        while (true) {
+            int row = (int)(Math.random() * rowNum);
+            int col = (int)(Math.random() * colNum);
+
+            if(row < rowNum && col < colNum){
+                Node node = nodeList.get(row).get(col);
+                if(node.isTraversable()){
+                    return node.getPosition();
+                }
+            }
+        }
     }
 
     public ArrayList<ArrayList<Node>> getNodeList() {
         return nodeList;
+    }
+    public ArrayList<Wall> getWalls() {
+        return walls;
     }
 
     public int getColNum() {

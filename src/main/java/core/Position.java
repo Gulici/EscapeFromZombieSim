@@ -1,7 +1,7 @@
 package core;
 
 public class Position {
-    public static int PROXIMITY_RANGE = 10;
+    public static int PROXIMITY_RANGE = 8;
     private double x;
     private double y;
 
@@ -20,31 +20,19 @@ public class Position {
 
     public void apply(Motion motion) {
         Vector2D vector = motion.getVector();
-        x += vector.getX();
-        y += vector.getY();
+        if (vector != null) {
+            x += vector.getX();
+            y += vector.getY();
+        }
     }
-//    public void add(Position position) {
-//        x += position.getX();
-//        y += position.getY();
-//    }
-//    public void subtract(Position position) {
-//        x -= position.getX();
-//        y -= position.getY();
-//    }
+    public double distanceTo(Position other) {
+        double deltaX = this.getX() - other.getX();
+        double deltaY = this.getY() - other.getY();
+
+        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    }
     public boolean isInRangeOf(Position position) {
-        return Math.abs(x - position.getX()) < Position.PROXIMITY_RANGE &&  Math.abs(y - position.getY()) < Position.PROXIMITY_RANGE;
-    }
-//    public double distanceTo(Position other) {
-//        double deltaX = this.getX() - other.getX();
-//        double deltaY = this.getY() - other.getY();
-//
-//        return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-//    }
-    public void setX(double x) {
-        this.x = x;
-    }
-    public void setY(double y) {
-        this.y = y;
+        return this.distanceTo(position) < PROXIMITY_RANGE;
     }
     public int intX() {
         return (int) Math.round(x);
@@ -58,11 +46,14 @@ public class Position {
     public double getY() {
         return y;
     }
-
     public void applyX(Motion motion) {
         x += motion.getVector().getX();
     }
     public void applyY(Motion motion){
         y += motion.getVector().getY();
+    }
+
+    public void setX(int x) {
+        this.x = x;
     }
 }
