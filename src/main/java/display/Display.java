@@ -8,15 +8,19 @@ import java.awt.*;
 
 public class Display extends JFrame {
     private final SimPanel simPanel;
+    private final InfoPanel infoPanel;
     public Display(Input input, Sim sim){
         setTitle("title");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
+        setLayout(new BorderLayout());
 
         Renderer renderer = new Renderer();
         simPanel = new SimPanel(sim, input);
+        infoPanel = new InfoPanel(sim, input);
 
-        add(simPanel);
+        add(infoPanel, BorderLayout.WEST);
+        add(simPanel, BorderLayout.CENTER);
 
         pack();
         setLocationRelativeTo(null);
