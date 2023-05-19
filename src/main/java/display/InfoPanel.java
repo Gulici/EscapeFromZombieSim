@@ -17,7 +17,7 @@ public class InfoPanel extends JPanel {
         setPreferredSize(dimension);
         setBackground(Color.gray);
         setDoubleBuffered(true);
-        setFocusable(true);
+        //setFocusable(true);
     }
 
     public void paintComponent (Graphics graphics) {
