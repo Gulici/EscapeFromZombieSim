@@ -56,6 +56,7 @@ public class InfoPanel extends JPanel implements ActionListener {
 
         if(e.getSource().equals(startButton)) {
             simState.setRunning(true);
+            simState.setWasStopped(true);
         }
         if (e.getSource().equals(stopButton)) {
             simState.setRunning(false);

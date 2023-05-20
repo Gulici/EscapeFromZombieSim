@@ -6,8 +6,6 @@ public class SimLoop implements Runnable {
     Thread thread;
     private final int TPS = 60;
 
-    private boolean running = true;
-
     public SimLoop(){
         simState = new SimState();
         sim = new Sim(simState);
@@ -27,21 +25,27 @@ public class SimLoop implements Runnable {
         int tpsCounter = 0;
         int fpsCounter = 0;
 
+        sim.setSim(simState);
+
 
         while (thread.isAlive()){
-
-
 
             //start simulation
             //reset simulation
             //stop simulation
-            if (!running) {
-                //update settings or start simulation
-            }
-
 
 
             if (simState.isRunning()) {
+
+                if(simState.isWasStopped()) {
+                    lastTime = System.nanoTime();
+                    simState.setWasStopped(false);
+                    deltaAccumulated = 0;
+                    timer = 0;
+                    tpsCounter = 0;
+                    fpsCounter = 0;
+                }
+
                 currentTime = System.nanoTime();
                 deltaTime = (currentTime - lastTime);
                 deltaAccumulated += deltaTime;
