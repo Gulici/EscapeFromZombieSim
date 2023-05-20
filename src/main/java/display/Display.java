@@ -2,6 +2,7 @@ package display;
 
 import input.Input;
 import sim.Sim;
+import sim.SimState;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +10,7 @@ import java.awt.*;
 public class Display extends JFrame {
     private final SimPanel simPanel;
     private final InfoPanel infoPanel;
-    public Display(Input input, Sim sim){
+    public Display(Input input, Sim sim, SimState simState){
         setTitle("title");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
@@ -17,7 +18,7 @@ public class Display extends JFrame {
 
         Renderer renderer = new Renderer();
         simPanel = new SimPanel(sim, input);
-        infoPanel = new InfoPanel(sim, input);
+        infoPanel = new InfoPanel(sim, input, simState);
 
         add(infoPanel, BorderLayout.WEST);
         add(simPanel, BorderLayout.CENTER);

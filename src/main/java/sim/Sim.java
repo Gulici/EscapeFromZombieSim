@@ -1,16 +1,13 @@
 package sim;
 
-import ai.FollowPath;
 import controller.AgentController;
 import controller.ManualController;
-import core.Position;
 import display.Display;
 import entity.*;
 import input.Input;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Sim {
     private Display display;
@@ -23,12 +20,14 @@ public class Sim {
         input = new Input();
         map  = new Map(this);
         entityList.addAll(map.getWalls());
-        display = new Display(input, this);
+        display = new Display(input, this, simState);
+    }
 
+    public void setSim(SimState simState) {
         entityList.add(new ManualAgent(new ManualController(input)));
 
 
-        for (int i = 0; i < simState.getNumberOfHumans() ; i++) {
+        for (int i = 0 ; i < simState.getNumberOfHumans() ; i++) {
             entityList.add(new Human(this, new AgentController()));
         }
     }
