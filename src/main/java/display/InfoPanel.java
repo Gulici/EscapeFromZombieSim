@@ -17,13 +17,11 @@ public class InfoPanel extends JPanel {
         setPreferredSize(dimension);
         setBackground(Color.gray);
         setDoubleBuffered(true);
-        //setFocusable(true);
     }
 
     public void paintComponent (Graphics graphics) {
         super.paintComponent(graphics);
         Graphics2D graphics2D = (Graphics2D) graphics;
-
 
         graphics2D.dispose();
     }
