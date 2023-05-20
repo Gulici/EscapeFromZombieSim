@@ -8,7 +8,7 @@ public class SimState {
     private boolean running = false;
     private boolean setSim = false;
 
-    private boolean wasStopped = false;
+    private boolean wasStopped = true;
 
     public SimState() {
 
