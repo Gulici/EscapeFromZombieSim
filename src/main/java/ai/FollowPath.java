@@ -44,4 +44,8 @@ public class FollowPath {
         }
     }
 
+    public int getLength() {
+        return this.path.size();
+    }
+
 }
