@@ -2,14 +2,14 @@ package sim;
 
 public class SimLoop implements Runnable {
     Sim sim;
+    SimState simState;
     Thread thread;
     private final int TPS = 60;
 
-    public SimLoop(int numberOfAgents){
-        sim = new Sim(numberOfAgents);
-        System.out.println("init loop");
+    public SimLoop(){
+        simState = new SimState();
+        sim = new Sim(simState);
         startThread();
-
     }
     public void startThread(){
         thread = new Thread(this);
@@ -26,25 +26,51 @@ public class SimLoop implements Runnable {
         int fpsCounter = 0;
 
         while (thread.isAlive()){
-            currentTime = System.nanoTime();
-            deltaTime = (currentTime - lastTime);
-            deltaAccumulated += deltaTime;
-            timer += deltaTime;
-            lastTime = currentTime;
 
-            while(deltaAccumulated >= tickInterval){
-                deltaAccumulated -= tickInterval;
-                tpsCounter++;
-                sim.update();
+            if (!simState.isRunning()) {
+                if(simState.isSetSim()) {
+                    sim.resetEntity();
+                    sim.setSim(simState);
+                    sim.render();
+                    simState.setSetSim(false);
+                }
+
+                if (simState.isReset()) {
+
+                    simState.setReset(false);
+                }
             }
-            sim.render();
-            fpsCounter++;
 
-            if(timer >= 1000000000){
-                System.out.println("TPS:"+tpsCounter+" FPS:"+fpsCounter);
-                tpsCounter =0;
-                fpsCounter = 0;
-                timer = 0;
+            if (simState.isRunning()) {
+                if(simState.isWasStopped()) {
+                    simState.setWasStopped(false);
+                    lastTime = System.nanoTime();
+                    deltaAccumulated = 0;
+                    timer = 0;
+                    tpsCounter = 0;
+                    fpsCounter = 0;
+                }
+
+                currentTime = System.nanoTime();
+                deltaTime = (currentTime - lastTime);
+                deltaAccumulated += deltaTime;
+                timer += deltaTime;
+                lastTime = currentTime;
+
+                while (deltaAccumulated >= tickInterval) {
+                    deltaAccumulated -= tickInterval;
+                    tpsCounter++;
+                    sim.update();
+                }
+                sim.render();
+                fpsCounter++;
+
+                if (timer >= 1000000000) {
+                    System.out.println("TPS:" + tpsCounter + " FPS:" + fpsCounter);
+                    tpsCounter = 0;
+                    fpsCounter = 0;
+                    timer = 0;
+                }
             }
         }
     }
