@@ -28,19 +28,21 @@ public class Node {
         return new Position(x,y);
     }
     public void draw(Graphics2D g2){
-//            g2.setColor(Color.darkGray);
-//            g2.drawRect(position.intX(), position.intY(), size.getWidth(), size.getHeight());
 
-            if(target){
-                g2.setColor(Color.orange);
-                g2.fillRect(position.intX(), position.intY(), size.getWidth(), size.getHeight());
-            }
+//            if(target){
+//                g2.setColor(Color.orange);
+//                g2.fillRect(position.intX(), position.intY(), size.getWidth(), size.getHeight());
+//            }
     }
 
     public void setPosition(int col, int row) {
         this.col = col;
         this.row = row;
         this.position = new Position(col * size.getWidth(), row * size.getHeight());
+    }
+
+    public void resetNode() {
+        parent = null;
     }
     public void setTraversable(boolean traversable){
         this.traversable = traversable;

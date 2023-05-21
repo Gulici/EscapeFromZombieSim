@@ -43,7 +43,6 @@ public class AStar {
         this.nodeSize = map.getTileSize();
         this.rowNum = map.getRowNum();
         this.colNum = map.getColNum();
-        //System.out.println("Init AS");
     }
     public boolean findPath(Position start, Position target){
         path = new ArrayList<>();
@@ -54,7 +53,6 @@ public class AStar {
         startNode.setHCost(0);
         startNode.setFCost();
         open.add(startNode);
-        //System.out.println("Init findpath AS");
 
         Node targetNode = findNodeByPosition(target);
         Position targetPosition = targetNode.getCenterPosition();

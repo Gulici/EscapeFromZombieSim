@@ -6,9 +6,10 @@ package sim;
 public class SimState {
     private int numberOfHumans = 10;
     private boolean running = false;
-    private boolean setSim = false;
-
     private boolean wasStopped = true;
+    private boolean setSim = false;
+    private boolean reset = false;
+    private boolean wasReset = false;
 
     public SimState() {
 
@@ -43,5 +44,21 @@ public class SimState {
 
     public void setWasStopped(boolean wasStopped) {
         this.wasStopped = wasStopped;
+    }
+
+    public boolean isReset() {
+        return reset;
+    }
+
+    public void setReset(boolean reset) {
+        this.reset = reset;
+    }
+
+    public boolean isWasReset() {
+        return wasReset;
+    }
+
+    public void setWasReset(boolean wasReset) {
+        this.wasReset = wasReset;
     }
 }

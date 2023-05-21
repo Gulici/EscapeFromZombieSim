@@ -20,16 +20,25 @@ public class Sim {
         input = new Input();
         map  = new Map(this);
         entityList.addAll(map.getWalls());
+        entityList.addAll(map.getExits());
         display = new Display(input, this, simState);
     }
 
     public void setSim(SimState simState) {
-        entityList.add(new ManualAgent(new ManualController(input)));
-
-
         for (int i = 0 ; i < simState.getNumberOfHumans() ; i++) {
             entityList.add(new Human(this, new AgentController()));
         }
+    }
+
+    public void resetEntity() {
+       ArrayList<Entity> toRemove = new ArrayList<>();
+       for (Entity entity : entityList) {
+           if (!(entity instanceof Wall) && !(entity instanceof Exit)) {
+               toRemove.add(entity);
+           }
+       }
+       entityList.removeAll(toRemove);
+       map.resetNodes();
     }
 
     public void update(){

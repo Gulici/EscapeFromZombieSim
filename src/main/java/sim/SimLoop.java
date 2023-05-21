@@ -25,21 +25,26 @@ public class SimLoop implements Runnable {
         int tpsCounter = 0;
         int fpsCounter = 0;
 
-        sim.setSim(simState);
-
-
         while (thread.isAlive()){
 
-            //start simulation
-            //reset simulation
-            //stop simulation
+            if (!simState.isRunning()) {
+                if(simState.isSetSim()) {
+                    sim.resetEntity();
+                    sim.setSim(simState);
+                    sim.render();
+                    simState.setSetSim(false);
+                }
 
+                if (simState.isReset()) {
+
+                    simState.setReset(false);
+                }
+            }
 
             if (simState.isRunning()) {
-
                 if(simState.isWasStopped()) {
-                    lastTime = System.nanoTime();
                     simState.setWasStopped(false);
+                    lastTime = System.nanoTime();
                     deltaAccumulated = 0;
                     timer = 0;
                     tpsCounter = 0;
