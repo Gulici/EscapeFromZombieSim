@@ -1,3 +1,9 @@
+# Tasks:
+ - dodać licznik agentów oraz zaimplementować interakcje Human z Exit
+ - dodać suwak( lub coś innego) w info panelu, ustawiający ilość agentów.
+ - dodać generowanie najkrótszych scieżek do wyjścia w trakcie inicjalizacji mapy
+ - zombie zombie zombie, może zacząć dodania prostej interakcji z czlowiekiem 
+
 1)WYŚWIETLANIE I ZBIERANIE INFORMACJI W TRAKCIE PRZEBIEGU
 
 2)ZACHOWANIE CZLOWIEKA:
