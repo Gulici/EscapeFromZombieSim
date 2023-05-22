@@ -15,9 +15,9 @@ import java.util.Collection;
 import java.util.List;
 
 public class Map {
-    private final int tileSize = 16;
-    private final int colNum = 40;
-    private final int rowNum = 40;
+    private final int tileSize = 10;
+    private final int colNum = 100;
+    private final int rowNum = 100;
     private final int mapWidth = tileSize * colNum;
     private final int mapHeight = tileSize * rowNum;
     private final ArrayList<ArrayList<Node>> nodeList;
@@ -42,7 +42,7 @@ public class Map {
             nodeList.add(nodeRow);
         }
 
-        mapReader.readFromTxt("/map/map.txt");
+        mapReader.readFromTxt("/map/map100x100.txt");
         createMap(sim);
         pathfinder = new Dijkstra(this);
         aStar = new AStar(this);

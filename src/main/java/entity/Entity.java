@@ -14,7 +14,7 @@ public abstract class Entity {
     protected Size size;
     public Entity() {
         position = new Position(0, 0);
-        size = new Size(16, 16);
+        size = new Size(10, 10);
     }
 
     public abstract void update(Sim sim);
