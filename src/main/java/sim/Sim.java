@@ -13,10 +13,12 @@ public class Sim {
     private Display display;
     private Input input;
     private List<Entity> entityList;
+    private List<Agent> agentsList;
     private Map map;
 
     public Sim(SimState simState){
         entityList = new ArrayList<>();
+        agentsList = new ArrayList<>();
         input = new Input();
         map  = new Map(this);
         entityList.addAll(map.getWalls());
@@ -26,7 +28,9 @@ public class Sim {
 
     public void setSim(SimState simState) {
         for (int i = 0 ; i < simState.getNumberOfHumans() ; i++) {
-            entityList.add(new Human(this, new AgentController()));
+            Human human = new Human(this, new AgentController());
+            entityList.add(human);
+            agentsList.add(human);
         }
     }
 
@@ -42,7 +46,8 @@ public class Sim {
     }
 
     public void update(){
-        entityList.forEach(entity -> entity.update(this));
+        //entityList.forEach(entity -> entity.update(this));
+        agentsList.forEach(agent -> agent.update(this));
     }
     public void render(){
         display.render(this);

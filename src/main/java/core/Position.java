@@ -1,7 +1,7 @@
 package core;
 
 public class Position {
-    public static int PROXIMITY_RANGE = 8;
+    public static int PROXIMITY_RANGE = 5;
     private double x;
     private double y;
 
@@ -34,6 +34,7 @@ public class Position {
     public boolean isInRangeOf(Position position) {
         return this.distanceTo(position) < PROXIMITY_RANGE;
     }
+
     public int intX() {
         return (int) Math.round(x);
     }
@@ -46,6 +47,13 @@ public class Position {
     public double getY() {
         return y;
     }
+    public int getRow() {
+        return (int) y / 10;
+    }
+    public int getCol() {
+        return (int) x / 10;
+    }
+
     public void applyX(Motion motion) {
         x += motion.getVector().getX();
     }
