@@ -139,7 +139,7 @@ public class AStar {
         start.setGCost(0);
 
         ArrayList<Position> rightPath = new ArrayList<>();
-        rightPath.add(target);
+        rightPath.add(start.getCenterPosition());
         start.setPathToExitRight(rightPath);
 
         open = new ArrayList<>();
@@ -198,6 +198,7 @@ public class AStar {
     public void findPathFromLeftExit(Map map, Position target) {
         Node start = map.getNode(target);
         start.setGCost(0);
+
         ArrayList<Position> leftPath = new ArrayList<>();
         leftPath.add(start.getCenterPosition());
         start.setPathToExitLeft(leftPath);

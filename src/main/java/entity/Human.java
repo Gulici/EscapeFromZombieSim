@@ -16,7 +16,7 @@ public class Human extends Agent{
         super(entityController);
         setSize(new Size(6,6));
         setPosition(sim.getMap().getRandomPosition());
-        this.motion = new Motion(1);
+        this.motion = new Motion(0.5);
 
         followPath = new FollowPathToExit();
     }
@@ -30,7 +30,7 @@ public class Human extends Agent{
     @Override
     public void draw(Graphics2D graphics2D) {
         graphics2D.setColor(Color.BLUE);
-        graphics2D.fillRect(getCenterPosition().intX(), getCenterPosition().intY(), size.getWidth(), size.getHeight());
+        graphics2D.fillRect(getPosition().intX(), getPosition().intY(), size.getWidth(), size.getHeight());
     }
 
 }

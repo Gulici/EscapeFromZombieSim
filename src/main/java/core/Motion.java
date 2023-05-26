@@ -45,4 +45,10 @@ public class Motion {
                 stopY ? 0 : vector.getY()
         );
     }
+    public void slow() {
+        vector = new Vector2D(
+                vector.getX()/2,
+                vector.getY()/2
+        );
+    }
 }

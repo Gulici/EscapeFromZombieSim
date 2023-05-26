@@ -1,5 +1,6 @@
 package display;
 
+import entity.Agent;
 import input.Input;
 import sim.Sim;
 
@@ -27,6 +28,9 @@ public class SimPanel extends JPanel {
         Graphics2D g2 = (Graphics2D) graphics;
         sim.getMap().draw(g2);
         renderer.render(sim.getEntityList(),g2);
+        for (Agent deadAgent : sim.getDeadAgents()) {
+            deadAgent.draw(g2);
+        }
         g2.dispose();
     }
 }

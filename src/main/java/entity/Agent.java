@@ -29,20 +29,29 @@ public abstract class Agent extends Entity{
     protected void handleMotion(){
         motion.update(entityController);
     }
-    protected void handleCollision(Entity other){
+    protected void handleCollision(Entity other, Sim sim){
         if(other instanceof Wall ) {
             motion.stop(willCollideX(other.getCollisionBox()), willCollideY(other.getCollisionBox()));
         }
 
-//        if(other instanceof Agent) {
-//            motion.stop(true,true);
-//        }
+        if(other instanceof Human) {
+            //push him
+
+            motion.stop(willCollideX(other.getCollisionBox()), willCollideY(other.getCollisionBox()));
+//            kill him
+            if(willCollideX(other.getCollisionBox()) && willCollideY(other.getCollisionBox())) {
+                sim.addToKillList(this);
+            }
+        }
+        if (other instanceof DeadHuman) {
+            motion.slow();
+        }
     }
     protected void handleCollisions(Sim sim){
         List<Entity> collidingEntities = sim.getCollidingEntities(this);
 
         for(Entity other : collidingEntities){
-            this.handleCollision(other);
+            this.handleCollision(other, sim);
         }
     }
     @Override
