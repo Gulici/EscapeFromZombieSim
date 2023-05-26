@@ -47,8 +47,8 @@ public class Motion {
     }
     public void slow() {
         vector = new Vector2D(
-                vector.getX()/2,
-                vector.getY()/2
+                vector.getX() * 0.7,
+                vector.getY() * 0.7
         );
     }
 }

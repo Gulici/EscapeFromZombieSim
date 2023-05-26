@@ -36,12 +36,13 @@ public abstract class Agent extends Entity{
 
         if(other instanceof Human) {
             //push him
+            ((Human) other).increasePushCounter();
+            motion.stop(this.willCollideX(other.getCollisionBox()), this.willCollideY(other.getCollisionBox()));
+//          /*
+//          tutaj jest problem, z jakiegos powodu dziala na odwrot
+//          być może
+//           */
 
-            motion.stop(willCollideX(other.getCollisionBox()), willCollideY(other.getCollisionBox()));
-//            kill him
-            if(willCollideX(other.getCollisionBox()) && willCollideY(other.getCollisionBox())) {
-                sim.addToKillList(this);
-            }
         }
         if (other instanceof DeadHuman) {
             motion.slow();
@@ -57,6 +58,10 @@ public abstract class Agent extends Entity{
     @Override
     public boolean collidesWith(Entity other) {
         return this.getCollisionBox().collidesWith(other.getCollisionBox());
+    }
+
+    public void pushHuman (Human other) {
+        other.increasePushCounter();
     }
     public void apply(Motion motion) {
         position.apply(motion);
