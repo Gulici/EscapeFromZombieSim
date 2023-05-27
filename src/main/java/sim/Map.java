@@ -24,9 +24,8 @@ public class Map {
     private ArrayList<Wall> walls;
     private ArrayList<Exit> exits;
     private final MapReader mapReader = new MapReader(colNum,rowNum);
-    private Dijkstra pathfinder;
     private AStar aStar;
-    private Position targetPosition;
+    private Position exitPositionLeft, exitPositionRight;
 
     public Map(Sim sim){
         nodeList = new ArrayList<>();
@@ -43,15 +42,16 @@ public class Map {
         }
 
         mapReader.readFromTxt("/map/map100x100.txt");
-        createMap(sim);
-        pathfinder = new Dijkstra(this);
         aStar = new AStar(this);
+        createMap(sim);
     }
 
     public void createMap(Sim sim){
         int[][] mapData = mapReader.getTiles();
         ArrayList<Position> wallsPosition = new ArrayList<>();
-        ArrayList<Position> exitPosition = new ArrayList<>();
+        ArrayList<Position> exitPositionLeft = new ArrayList<>();
+        ArrayList<Position> exitPositionRight = new ArrayList<>();
+
         walls = new ArrayList<>();
         exits = new ArrayList<>();
 
@@ -60,11 +60,15 @@ public class Map {
                 if (mapData[row][col] == 1){
                     wallsPosition.add(new Position(col * tileSize, row * tileSize));
                 }
-                if (mapData[row][col] ==2) {
-                    exitPosition.add(new Position(col * tileSize, row * tileSize));
+                if (mapData[row][col] == 2) {
+                    exitPositionLeft.add(new Position(col * tileSize, row * tileSize));
+                }
+                if (mapData[row][col] == 3) {
+                    exitPositionRight.add(new Position(col * tileSize, row * tileSize));
                 }
             }
         }
+
         for(ArrayList<Node> nodeRow : nodeList){
             for (Node node : nodeRow) {
                 for (Position position : wallsPosition) {
@@ -76,15 +80,29 @@ public class Map {
                         Wall wall = new Wall();
                         wall.setPosition(position);
                         walls.add(wall);
+                        break;
                     }
                 }
-                for (Position position : exitPosition) {
+                for (Position position : exitPositionLeft) {
                     int x = position.intX();
                     int y = position.intY();
 
                     if (node.getPosition().intX() == x && node.getPosition().intY() == y) {
                         node.setTarget(true);
-                        targetPosition = position;
+                        this.exitPositionLeft = position;
+                        Exit exit = new Exit();
+                        exit.setPosition(position);
+                        exits.add(exit);
+                    }
+                }
+
+                for (Position position : exitPositionRight) {
+                    int x = position.intX();
+                    int y = position.intY();
+
+                    if (node.getPosition().intX() == x && node.getPosition().intY() == y) {
+                        node.setTarget(true);
+                        this.exitPositionRight = position;
                         Exit exit = new Exit();
                         exit.setPosition(position);
                         exits.add(exit);
@@ -92,10 +110,8 @@ public class Map {
                 }
             }
         }
-    }
-
-    public List<Position> findPath(Position start, Position target) {
-        return pathfinder.findPath(start, target);
+        aStar.findPathFromLeftExit(this, this.exitPositionLeft);
+        aStar.findPathFromRightExit(this, this.exitPositionRight);
     }
 
     public List<Position> findPathAS(Position start, Position target) {
@@ -105,24 +121,6 @@ public class Map {
 
     public void draw(Graphics2D graphics2D){
         nodeList.forEach(nodes -> nodes.forEach(node -> node.draw(graphics2D)));
-    }
-
-    public void setRandomTarget(){
-        boolean found = false;
-
-        while (!found){
-            int row = (int)(Math.random() * rowNum);
-            int col = (int)(Math.random() * colNum);
-
-            if(row < rowNum && col < colNum){
-                Node node = nodeList.get(row).get(col);
-                if(node.isTraversable()){
-                    node.setTarget(true);
-                    setTargetPosition(node.getCenterPosition());
-                    found = true;
-                }
-            }
-        }
     }
 
     public Position getRandomPosition() {
@@ -144,6 +142,12 @@ public class Map {
             for (Node node : nodeRow) node.resetNode();
         }
         aStar = new AStar(this);
+    }
+
+    public Node getNode(Position position) {
+        int row = position.getRow();
+        int col = position.getCol();
+        return nodeList.get(row).get(col);
     }
 
     public ArrayList<ArrayList<Node>> getNodeList() {
@@ -171,14 +175,6 @@ public class Map {
 
     public int getTileSize() {
         return tileSize;
-    }
-
-    public Position getTargetPosition() {
-        return targetPosition;
-    }
-
-    public void setTargetPosition(Position targetPosition) {
-        this.targetPosition = targetPosition;
     }
 
     public ArrayList<Exit> getExits() {

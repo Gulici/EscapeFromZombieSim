@@ -127,6 +127,136 @@ public class AStar {
         return false;
     }
 
+    /*
+    startujemy od wyjścia
+    szukamy sąsiadów, ustawiamy child.parent na current;
+    analizujemy ścieżkę:
+        bierzemy parent.path i przypisujemy do niego pozycje child
+        przypisujemy powiększony path do child
+     */
+    public void findPathFromRightExit(Map map, Position target) {
+        Node start = map.getNode(target);
+        start.setGCost(0);
+
+        ArrayList<Position> rightPath = new ArrayList<>();
+        rightPath.add(start.getCenterPosition());
+        start.setPathToExitRight(rightPath);
+
+        open = new ArrayList<>();
+        closed = new ArrayList<>();
+        open.add(start);
+
+        while(!open.isEmpty()) {
+            Node current = null;
+            for (Node node : open){
+                if(current == null){
+                    current = node;
+                }
+                else if (node.getGCost() < current.getGCost()) {
+                    current = node;
+                }
+            }
+
+            ArrayList<Node> neighbours = neighbourNodes(current);
+            Position currentPosition = current.getCenterPosition();
+
+            for (Node child : neighbours) {
+                Position childPosition = child.getCenterPosition();
+                double gCost = current.getGCost() + childPosition.distanceTo(currentPosition);
+
+                if(!open.contains(child) && !closed.contains(child)) {
+                    open.add(child);
+
+                    child.setParent(current);
+                    child.setGCost(gCost);
+
+                    ArrayList<Position> childPath = current.copyOfRightPath();
+                    childPath.add(childPosition);
+                    child.setPathToExitRight(childPath);
+                }
+                if (open.contains(child) && child.getGCost() > gCost) {
+                    child.setParent(current);
+                    child.setGCost(gCost);
+
+                    ArrayList<Position> childPath = current.copyOfRightPath();
+                    childPath.add(childPosition);
+                    child.setPathToExitRight(childPath);
+                }
+                if (closed.contains(child) && child.getGCost() > gCost) {
+                    closed.remove(child);
+                    open.add(child);
+                    ArrayList<Position> childPath = current.copyOfRightPath();
+                    childPath.add(childPosition);
+                    child.setPathToExitRight(childPath);
+                }
+            }
+            closed.add(current);
+            open.remove(current);
+        }
+    }
+
+    public void findPathFromLeftExit(Map map, Position target) {
+        Node start = map.getNode(target);
+        start.setGCost(0);
+
+        ArrayList<Position> leftPath = new ArrayList<>();
+        leftPath.add(start.getCenterPosition());
+        start.setPathToExitLeft(leftPath);
+
+        open = new ArrayList<>();
+        closed = new ArrayList<>();
+        open.add(start);
+
+        while(!open.isEmpty()) {
+            Node current = null;
+            for (Node node : open){
+                if(current == null){
+                    current = node;
+                }
+                else if (node.getGCost() < current.getGCost()) {
+                    current = node;
+                }
+            }
+
+            ArrayList<Node> neighbours = neighbourNodes(current);
+            Position currentPosition = current.getCenterPosition();
+
+            for (Node child : neighbours) {
+                Position childPosition = child.getCenterPosition();
+                double gCost = current.getGCost() + childPosition.distanceTo(currentPosition);
+
+                if(!open.contains(child) && !closed.contains(child)) {
+                    open.add(child);
+
+                    child.setParent(current);
+                    child.setGCost(gCost);
+
+                    ArrayList<Position> childPath = current.copyOfLeftPath();
+                    childPath.add(childPosition);
+                    child.setPathToExitLeft(childPath);
+                }
+                if (open.contains(child) && child.getGCost() > gCost) {
+                    child.setParent(current);
+                    child.setGCost(gCost);
+
+                    ArrayList<Position> childPath = current.copyOfLeftPath();
+                    childPath.add(childPosition);
+                    child.setPathToExitLeft(childPath);
+                }
+                if (closed.contains(child) && child.getGCost() > gCost) {
+                    closed.remove(child);
+                    open.add(child);
+                    ArrayList<Position> childPath = current.copyOfLeftPath();
+                    childPath.add(childPosition);
+                    child.setPathToExitLeft(childPath);
+                }
+            }
+            closed.add(current);
+            open.remove(current);
+        }
+    }
+
+
     private void analyzePath(Node target){
         if(target.getParent() == null){
             path = null;

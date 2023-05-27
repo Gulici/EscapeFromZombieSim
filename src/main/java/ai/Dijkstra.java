@@ -110,10 +110,5 @@ public class Dijkstra {
         }
         return neighbours;
     }
-
-    public void setTargetNode(Map map) {
-        this.targetNode.setTarget(false);
-        map.setRandomTarget();
-    }
 }
 

@@ -29,25 +29,39 @@ public abstract class Agent extends Entity{
     protected void handleMotion(){
         motion.update(entityController);
     }
-    protected void handleCollision(Entity other){
+    protected void handleCollision(Entity other, Sim sim){
         if(other instanceof Wall ) {
             motion.stop(willCollideX(other.getCollisionBox()), willCollideY(other.getCollisionBox()));
         }
 
-//        if(other instanceof Agent) {
-//            motion.stop(true,true);
-//        }
+        if(other instanceof Human) {
+            //push him
+            ((Human) other).increasePushCounter();
+            motion.stop(this.willCollideX(other.getCollisionBox()), this.willCollideY(other.getCollisionBox()));
+//          /*
+//          tutaj jest problem, z jakiegos powodu dziala na odwrot
+//          być może
+//           */
+
+        }
+        if (other instanceof DeadHuman) {
+            motion.slow();
+        }
     }
     protected void handleCollisions(Sim sim){
         List<Entity> collidingEntities = sim.getCollidingEntities(this);
 
         for(Entity other : collidingEntities){
-            this.handleCollision(other);
+            this.handleCollision(other, sim);
         }
     }
     @Override
     public boolean collidesWith(Entity other) {
         return this.getCollisionBox().collidesWith(other.getCollisionBox());
+    }
+
+    public void pushHuman (Human other) {
+        other.increasePushCounter();
     }
     public void apply(Motion motion) {
         position.apply(motion);

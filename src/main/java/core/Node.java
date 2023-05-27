@@ -1,6 +1,7 @@
 package core;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Node {
     private final Size size;
@@ -13,6 +14,9 @@ public class Node {
     private double gCost;
     private double hCost;
     private double fCost;
+    private ArrayList<Position> pathToExitLeft;
+    private ArrayList<Position> pathToExitRight;
+
 
     public Node(int width, int height) {
         size = new Size(width, height);
@@ -102,5 +106,28 @@ public class Node {
 
     public boolean isTraversable() {
         return traversable;
+    }
+
+    public ArrayList<Position> copyOfLeftPath() {
+        return new ArrayList<>(pathToExitLeft);
+    }
+    public ArrayList<Position> copyOfRightPath() {
+        return new ArrayList<>(pathToExitRight);
+    }
+
+    public ArrayList<Position> getPathToExitLeft() {
+        return pathToExitLeft;
+    }
+
+    public void setPathToExitLeft(ArrayList<Position> pathToExitLeft) {
+        this.pathToExitLeft = pathToExitLeft;
+    }
+
+    public ArrayList<Position> getPathToExitRight() {
+        return pathToExitRight;
+    }
+
+    public void setPathToExitRight(ArrayList<Position> pathToExitRight) {
+        this.pathToExitRight = pathToExitRight;
     }
 }

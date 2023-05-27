@@ -3,6 +3,7 @@ package entity;
 import sim.Sim;
 
 import java.awt.*;
+import java.util.List;
 
 public class Exit extends Entity {
 
@@ -12,7 +13,7 @@ public class Exit extends Entity {
 
     @Override
     public void update(Sim sim) {
-
+        handleCollisions(sim);
     }
 
     @Override
@@ -21,7 +22,20 @@ public class Exit extends Entity {
         graphics2D.fillRect(position.intX(), position.intY(), size.getWidth(), size.getHeight());    }
 
     @Override
-    public boolean collidesWith(Entity entity) {
-        return false;
+    public boolean collidesWith(Entity other) {
+        return this.getCollisionBox().collidesWith(other.getCollisionBox());
+    }
+    protected void handleCollision(Entity other, Sim sim){
+        if (other instanceof Human) {
+            sim.addToEscapeList((Agent) other);
+        }
+    }
+
+    protected void handleCollisions(Sim sim){
+        List<Entity> collidingEntities = sim.getCollidingEntities(this);
+
+        for(Entity other : collidingEntities){
+            this.handleCollision(other, sim);
+        }
     }
 }
