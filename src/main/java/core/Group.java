@@ -10,7 +10,9 @@ public class Group extends HashSet<Human> {
     private Human leader = null;
 
     public Group(Human agent) {
+        super();
         leader = agent;
+        super.add(agent);
     }
 
     @Override
@@ -39,8 +41,8 @@ public class Group extends HashSet<Human> {
         double y = 0;
         for(Human agent: this) {
             Position pos = agent.getCenterPosition();
-            x += pos.intX();
-            y += pos.intY();
+            x += pos.getX();
+            y += pos.getY();
         }
 
         return new Position(x/this.size(), y/this.size());
