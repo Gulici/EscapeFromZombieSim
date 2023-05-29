@@ -67,8 +67,8 @@ public class Human extends Agent implements Comparable<Human> {
             }
             case "KnockOver" -> {}
             case "Trampled" -> {
-                sim.addToKillList(this);
                 group.remove(this);
+                sim.addToKillList(this);
             }
         }
         followPath.update(this, sim);

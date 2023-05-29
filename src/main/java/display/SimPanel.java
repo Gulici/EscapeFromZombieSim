@@ -6,6 +6,7 @@ import sim.Sim;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class SimPanel extends JPanel {
     Sim sim;
@@ -28,8 +29,11 @@ public class SimPanel extends JPanel {
         Graphics2D g2 = (Graphics2D) graphics;
         sim.getMap().draw(g2);
         renderer.render(sim.getEntityList(),g2);
-        for (Agent deadAgent : sim.getDeadAgents()) {
-            deadAgent.draw(g2);
+        List<Agent> dead = sim.getDeadAgents();
+        synchronized (dead) {
+            for (Agent deadAgent : sim.getDeadAgents()) {
+                deadAgent.draw(g2);
+            }
         }
         g2.dispose();
     }

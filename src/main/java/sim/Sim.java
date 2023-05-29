@@ -9,6 +9,7 @@ import input.Input;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Collections;
 
 public class Sim {
     private Display display;
@@ -24,12 +25,12 @@ public class Sim {
     private Map map;
 
     public Sim(SimState simState){
-        entityList = new ArrayList<>();
-        agentsList = new ArrayList<>();
-        agentsToKill = new ArrayList<>();
-        deadAgents = new ArrayList<>();
-        agentsToEscape = new ArrayList<>();
-        escapeHumans = new ArrayList<>();
+        entityList = Collections.synchronizedList(new ArrayList<>());
+        agentsList = Collections.synchronizedList(new ArrayList<>());
+        agentsToKill = Collections.synchronizedList(new ArrayList<>());
+        deadAgents = Collections.synchronizedList(new ArrayList<>());
+        agentsToEscape = Collections.synchronizedList(new ArrayList<>());
+        escapeHumans = Collections.synchronizedList(new ArrayList<>());
         entityInRegions = new HashMap<>();
         input = new Input();
         map  = new Map(this);
@@ -156,8 +157,8 @@ public class Sim {
         agentsToEscape.add(agent);
     }
 
-    public ArrayList<Entity> getEntityList() {
-        return (ArrayList<Entity>) entityList;
+    public List<Entity> getEntityList() {
+        return entityList;
     }
     public List<Entity> getCollidingEntities(Entity entity){
         List<Entity> collidingList = new ArrayList<>();
