@@ -34,11 +34,6 @@ public class SimLoop implements Runnable {
                     sim.render();
                     simState.setSetSim(false);
                 }
-
-                if (simState.isReset()) {
-
-                    simState.setReset(false);
-                }
             }
 
             if (simState.isRunning()) {
