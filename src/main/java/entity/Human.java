@@ -4,7 +4,7 @@ import ai.FollowPath;
 import ai.FollowPathToExit;
 import ai.FollowToHuman;
 import controller.EntityController;
-import controller.AgentController;
+import java.lang.Comparable;
 import core.Motion;
 import core.Size;
 import sim.Sim;
@@ -12,7 +12,7 @@ import core.Group;
 import core.Position;
 import java.awt.*;
 
-public class Human extends Agent{
+public class Human extends Agent implements Comparable<Human> {
 
     FollowPath followPath;
     Group group;
@@ -33,6 +33,11 @@ public class Human extends Agent{
         this.motion = new Motion(this.speed);
         followPath = new FollowPathToExit();
         group = new Group(this);
+    }
+
+    @Override
+    public int compareTo(Human h) {
+        return followPath.getLength() - h.getPathLength();
     }
 
     @Override
