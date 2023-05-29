@@ -44,14 +44,14 @@ public class Human extends Agent implements Comparable<Human> {
     public void update(Sim sim) {
         if(ticksPathChange == 300) {
             ticksPathChange = 0;
-            if(group.getLeader() != this) {
-                followPath = new FollowToHuman(group.getLeader());
+            if(group.first() != this) {
+                followPath = new FollowToHuman(group.first());
             }
         }
-        if (ticksPathChange%30 == 0 && group.getLeader() == this) {
+        if (ticksPathChange%30 == 0 && group.first() == this) {
               Position mean = group.meanPosition();
               double distance = this.getCenterPosition().distanceTo(mean);
-              double new_speed = this.speed - 1/60 *distance;
+              double new_speed = this.speed - 0.01 *distance;
               if (new_speed > 0) {
                   this.motion = new Motion(new_speed);
               }
@@ -66,7 +66,10 @@ public class Human extends Agent implements Comparable<Human> {
                 apply(motion);
             }
             case "KnockOver" -> {}
-            case "Trampled" -> sim.addToKillList(this);
+            case "Trampled" -> {
+                sim.addToKillList(this);
+                group.remove(this);
+            }
         }
         followPath.update(this, sim);
         super.update(sim);

@@ -1,38 +1,19 @@
 package core;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.TreeSet;
 import entity.Human;
-import core.Position;
 
 @SuppressWarnings("serial")
-public class Group extends HashSet<Human> {
-    private Human leader = null;
-
+public class Group extends TreeSet<Human> {
     public Group(Human agent) {
         super();
-        leader = agent;
         super.add(agent);
-    }
-
-    @Override
-    public boolean add(Human agent) {
-        boolean ret = super.add(agent);
-        if(ret && leader == null)
-            leader = agent;
-        return ret;
-    };
-
-    public Human getLeader() {
-        return leader;
     }
 
     public Group merge(Group g) {
         if (g == this)
             return this;
         this.addAll(g);
-        this.leader = (this.leader.getPathLength() < g.getLeader().getPathLength()) ?
-          this.leader : g.getLeader();
         return this;
     }
 
