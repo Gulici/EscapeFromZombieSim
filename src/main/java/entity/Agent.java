@@ -8,6 +8,7 @@ import core.Size;
 import sim.Sim;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Agent extends Entity{
@@ -24,7 +25,9 @@ public abstract class Agent extends Entity{
     public void update(Sim sim) {
         handleMotion();
         handleCollisions(sim);
+        sim.removeFromRegion(this);
         apply(motion);
+        sim.updateRegion(this);
     }
     protected void handleMotion(){
         motion.update(entityController);
