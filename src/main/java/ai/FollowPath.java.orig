@@ -15,13 +15,13 @@ public class FollowPath {
     public FollowPath() {
         path = new ArrayList<>();
     }
-    public void update(Agent agent, Sim sim) {
+
+    public void update(Agent entity, Sim sim) {
     }
 
     protected boolean arrived(Agent entity) {
         return target != null && entity.getCenterPosition().isInRangeOf(target);
     }
-
     protected void handleMotion(Agent entity){
         AgentController controller = (AgentController) entity.getEntityController();
         if(arrived(entity)) {
@@ -34,8 +34,12 @@ public class FollowPath {
             controller.moveToTarget(path.get(path.size()-1), entity.getCenterPosition());
         }
     }
+<<<<<<< HEAD
+=======
+
     public int getLength() {
-        return path.size();
+        return this.path.size();
     }
 
+>>>>>>> origin/grouping
 }

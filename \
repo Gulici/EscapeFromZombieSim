@@ -48,6 +48,8 @@ public class Human extends Agent{
               double distance = this.getCenterPosition().distanceTo(mean);
               double new_speed = this.speed - 1/60 *distance;
               if (new_speed > 0) {
+                  // System.out.println(distance);
+                  System.out.println(new_speed);
                   this.motion = new Motion(new_speed);
               }
               else
