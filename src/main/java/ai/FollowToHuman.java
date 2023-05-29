@@ -14,10 +14,14 @@ public class FollowToHuman extends FollowPath{
     public FollowToHuman(Human target) {
         super();
         human_target = target;
+
+        System.out.println(" " + target.getPosition().getRow());
     }
     @Override
     public void update(Agent agent, Sim sim) {
 
+        if(!human_target.isAlive())
+            return;
         if((target == null) || !target.isInRangeOf(human_target.getCenterPosition())) {
 
             path.clear();
@@ -27,6 +31,7 @@ public class FollowToHuman extends FollowPath{
                 this.path.addAll(path);
             }
         }
+
 
         handleMotion(agent);
     }

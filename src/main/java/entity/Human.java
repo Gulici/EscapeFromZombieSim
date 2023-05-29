@@ -14,14 +14,15 @@ import java.awt.*;
 
 public class Human extends Agent implements Comparable<Human> {
 
-    FollowPath followPath;
+    protected FollowPath followPath;
     Group group;
-    private Color color;
-    private int ticksPathChange;
+    protected Color color;
+    protected int ticksPathChange;
     private double speed = 1;
     private String state;
     private int knockOverCounter;
     private int pushCounter;
+    private boolean alive = true;
     public Human(Sim sim, EntityController entityController) {
         super(entityController);
         setSize(new Size(6,6));
@@ -67,6 +68,7 @@ public class Human extends Agent implements Comparable<Human> {
             }
             case "KnockOver" -> {}
             case "Trampled" -> {
+                alive = false;
                 group.remove(this);
                 sim.addToKillList(this);
             }
@@ -129,10 +131,16 @@ public class Human extends Agent implements Comparable<Human> {
         graphics2D.setColor(color);
         graphics2D.fillRect(getCenterPosition().intX(), getCenterPosition().intY(), size.getWidth(), size.getHeight());
     }
+
     public void increasePushCounter() {
         pushCounter++;
     }
+
     public int getPathLength() {
         return followPath.getLength();
+    }
+
+    public boolean isAlive(){
+        return alive;
     }
 }

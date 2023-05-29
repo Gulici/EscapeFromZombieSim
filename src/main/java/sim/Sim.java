@@ -56,6 +56,11 @@ public class Sim {
             entityList.add(human);
             agentsList.add(human);
         }
+        for (int i = 0 ; i < simState.getNumberOfZombies() ; i++) {
+            Zombie zombie = new Zombie(this, new AgentController());
+            entityList.add(zombie);
+            agentsList.add(zombie);
+        }
         assignToRegions();
     }
 
@@ -89,17 +94,21 @@ public class Sim {
         }
     }
 
-    public ArrayList<Integer> findRegionKeys(Entity entity) {
-        int regionKey;
-        ArrayList<Integer> regionKeys = new ArrayList<>();
-        int row = entity.getPosition().getRow();
-        int col = entity.getPosition().getCol();
-
+    public int findRegionKeys(int row, int col) {
         int rowRegion = (int) row / 25;
         int colRegion = (int) col / 25;
+        int regionKey = rowRegion * 4 + colRegion;
+        return regionKey;
+    }
 
-        regionKey = rowRegion * 4 + colRegion;
-        regionKeys.add(regionKey);
+    public ArrayList<Integer> findRegionKeys(Entity entity) {
+        ArrayList<Integer> regionKeys = new ArrayList<Integer>();
+        int regionKey;
+        int row = entity.getPosition().getRow();
+        int col = entity.getPosition().getCol();
+        regionKeys.add(findRegionKeys(row, col));
+
+        regionKey = regionKeys.get(0);
 
         boolean right = false, below = false;
         if (row % 25 == 0 && row != 0) {
@@ -160,6 +169,30 @@ public class Sim {
     public List<Entity> getEntityList() {
         return entityList;
     }
+
+    public void chaseInRangeEntities(Zombie zombie) {
+        int range = zombie.getRange();
+        int row = zombie.getPosition().getRow();
+        int col = zombie.getPosition().getCol();
+        List<Integer> regions = new ArrayList<Integer>();
+        col = Math.max(col, 25);
+        row = Math.max(row, 25);
+        for(int i = col - range/2; i < col + range/2; i+=25)
+            for(int j = row - range/2; j < row + range/2; j+=25) {
+                regions.add(findRegionKeys(j, i));
+            }
+        System.out.println(regions);
+
+        for (Integer key : regions) {
+            for (Entity other : entityInRegions.get(key)) {
+                if(zombie.start_chasing(other))
+                    return;
+            }
+        }
+//        for (Entity other : entityList){
+
+    }
+
     public List<Entity> getCollidingEntities(Entity entity){
         List<Entity> collidingList = new ArrayList<>();
 
