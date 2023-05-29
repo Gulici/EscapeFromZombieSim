@@ -4,7 +4,7 @@ package sim;
     Class that's handle settings of simulation
  */
 public class SimState {
-    private int numberOfHumans = 1500;
+    private int numberOfHumans = 150;
     private boolean running = false;
     private boolean wasStopped = true;
     private boolean setSim = false;
