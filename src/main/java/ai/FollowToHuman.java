@@ -11,28 +11,33 @@ import java.util.List;
 
 public class FollowToHuman extends FollowPath{
     private Human human_target;
+    private int ticksPerPathUpdate = 0;
     public FollowToHuman(Human target) {
         super();
         human_target = target;
 
-        System.out.println(" " + target.getPosition().getRow());
     }
     @Override
     public void update(Agent agent, Sim sim) {
 
-        if(!human_target.isAlive())
-            return;
-        if((target == null) || !target.isInRangeOf(human_target.getCenterPosition())) {
-
+        if(target == null || ticksPerPathUpdate == 30) {
             path.clear();
             List<Position> path = sim.getMap().findPathAS(agent.getCenterPosition(), human_target.getCenterPosition());
             if(!path.isEmpty()){
                 target = path.get(0);
                 this.path.addAll(path);
             }
+            ticksPerPathUpdate = 0;
+            ((Human)agent).calculateSpeed();
         }
-
+        ticksPerPathUpdate++;
+        
+        System.out.println(agent.getPosition().getX() + " " + agent.getPosition().getY() + " " + target.getX() + " " + target.getY());
 
         handleMotion(agent);
+    }
+
+    public void setTarget(Human target) {
+        human_target = target;
     }
 }

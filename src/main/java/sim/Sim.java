@@ -181,7 +181,7 @@ public class Sim {
             for(int j = row - range/2; j < row + range/2; j+=25) {
                 regions.add(findRegionKeys(j, i));
             }
-        System.out.println(regions);
+        //System.out.println(regions);
 
         for (Integer key : regions) {
             for (Entity other : entityInRegions.get(key)) {

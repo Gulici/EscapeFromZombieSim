@@ -17,7 +17,6 @@ public class Human extends Agent implements Comparable<Human> {
     protected FollowPath followPath;
     Group group;
     protected Color color;
-    protected int ticksPathChange;
     private double speed = 1;
     private String state;
     private int knockOverCounter;
@@ -41,27 +40,24 @@ public class Human extends Agent implements Comparable<Human> {
         return followPath.getLength() - h.getPathLength();
     }
 
+    public void calculateSpeed() {
+        Position mean = group.meanPosition();
+        double distance = this.getCenterPosition().distanceTo(mean);
+        double new_speed = this.speed - 0.05 *distance;
+        if (new_speed > 0) {
+          this.motion = new Motion(new_speed);
+        }
+        else
+          this.motion = new Motion(0);
+    }
+
     @Override
     public void update(Sim sim) {
-        if(ticksPathChange == 300) {
-            ticksPathChange = 0;
-            if(group.first() != this) {
-                followPath = new FollowToHuman(group.first());
-            }
-        }
-        if (ticksPathChange%30 == 0 && group.first() == this) {
-              Position mean = group.meanPosition();
-              double distance = this.getCenterPosition().distanceTo(mean);
-              double new_speed = this.speed - 0.01 *distance;
-              if (new_speed > 0) {
-                  this.motion = new Motion(new_speed);
-              }
-              else
-                  this.motion = new Motion(0);
-        }
-    updateState();
+        updateState();
         switch (state) {
             case "FollowPath" -> {
+                if (followPath instanceof FollowToHuman)
+                    ((FollowToHuman)followPath).setTarget(group.first());
                 followPath.update(this, sim); handleMotion();
                 handleCollisions(sim);
                 apply(motion);
@@ -73,7 +69,6 @@ public class Human extends Agent implements Comparable<Human> {
                 sim.addToKillList(this);
             }
         }
-        followPath.update(this, sim);
         super.update(sim);
     }
 
@@ -102,6 +97,10 @@ public class Human extends Agent implements Comparable<Human> {
             }
             default -> state = "FollowPath";
         }
+    }
+
+    public void testCollision(Entity other, Sim sim) {
+        super.handleCollision(other, sim);
     }
 
     @Override
