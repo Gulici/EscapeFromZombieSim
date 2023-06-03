@@ -302,14 +302,15 @@ public class AStar {
         return nodeList.get(y/10).get(x/10);
     }
     public Node findNodeByRowCol(int row, int col){
-        for (ArrayList<Node> nodes : nodeList) {
-            for (Node node : nodes) {
-                if (node.getRow() == row && node.getCol() == col) {
-                   return node;
-                }
-            }
-        }
-        return null;
+        return nodeList.get(row).get(col);
+        //for (ArrayList<Node> nodes : nodeList) {
+        //    for (Node node : nodes) {
+        //        if (node.getRow() == row && node.getCol() == col) {
+        //           return node;
+        //        }
+        //    }
+        //}
+        //return null;
     }
     public ArrayList<Node> neighbourNodes(Node node){
         ArrayList<Node> neighbourNodes = new ArrayList<>();
