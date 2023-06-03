@@ -143,6 +143,8 @@ public class Sim {
             agentsList.remove(agent);
             entityList.remove(agent);
             removeFromRegion(agent);
+            if (agent instanceof Human)
+                ((Human)agent).getGroup().remove(agent);
             DeadHuman deadHuman = new DeadHuman(new AgentController());
             deadHuman.setPosition(agent.getPosition());
             deadHuman.setSize(agent.getSize());

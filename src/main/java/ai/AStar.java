@@ -71,6 +71,7 @@ public class AStar {
 
             Position currentPosition = current.getCenterPosition();
             ArrayList<Node> neighbours = neighbourNodes(current);
+            
 
             for (Node child : neighbours) {
                 Position childPosition = child.getCenterPosition();
@@ -78,7 +79,9 @@ public class AStar {
                 double hCost = childPosition.distanceTo(targetPosition);
                 double fCost = gCost + hCost;
 
+                
                 if (child == targetNode) {
+                    
                     child.setParent(current);
                     analyzePath(targetNode);
                     clearNodes();
@@ -88,6 +91,7 @@ public class AStar {
                 boolean isInAnyList = false;
 
                 for (Node openNode : open){
+                    
                     if (child.equals(openNode)){
                         isInAnyList = true;
                         if (openNode.getFCost() > fCost) {
@@ -101,6 +105,7 @@ public class AStar {
                 }
 
                 for (Node closedNode : closed) {
+                    
                     if (child.equals(closedNode)){
                         isInAnyList = true;
                         if (closedNode.getFCost() > fCost) {
@@ -124,6 +129,7 @@ public class AStar {
         }
 
         clearNodes();
+        
         return false;
     }
 
@@ -264,9 +270,10 @@ public class AStar {
         else {
             Node node = target;
             do {
+                
                 path.add(node.getCenterPosition());
                 node = node.getParent();
-            } while (node.getParent() != null);
+            } while (node.getParent() != null && node != target);
         }
     }
     private void addToOpen(Node child, double gCost, double hCost){
@@ -324,11 +331,13 @@ public class AStar {
         return row >= 0 && row <= rowNum && col >= 0 && col < colNum;
     }
     public ArrayList<Position> getPath() {
+        
         return path;
     }
 
     public void clearNodes(){
         for (ArrayList<Node> nodes : nodeList) {
+            
             for (Node node : nodes) {
                 node.setParent(null);
                 node.setGCost(0);

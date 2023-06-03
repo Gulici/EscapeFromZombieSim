@@ -59,17 +59,18 @@ public class Human extends Agent implements Comparable<Human> {
                 if (followPath instanceof FollowToHuman)
                     ((FollowToHuman)followPath).setTarget(group.first());
                 followPath.update(this, sim); handleMotion();
-                handleCollisions(sim);
-                apply(motion);
+                super.update(sim);
             }
             case "KnockOver" -> {}
             case "Trampled" -> {
                 alive = false;
-                group.remove(this);
                 sim.addToKillList(this);
             }
         }
-        super.update(sim);
+    }
+
+    public void updateTarget() {
+        followPath = new FollowToHuman(group.first());
     }
 
     private void updateState() {
@@ -114,6 +115,7 @@ public class Human extends Agent implements Comparable<Human> {
                 this.group = merged;
                 other_human.setGroup(merged);
             }
+            followPath = new FollowToHuman(group.first());
         }
     }
 

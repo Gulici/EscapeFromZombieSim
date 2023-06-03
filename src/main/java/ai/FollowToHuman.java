@@ -20,8 +20,9 @@ public class FollowToHuman extends FollowPath{
     @Override
     public void update(Agent agent, Sim sim) {
 
-        if(target == null || ticksPerPathUpdate == 30) {
+        if(target == null || ticksPerPathUpdate == 30 || !target.isInRangeOf(human_target.getCenterPosition())) {
             path.clear();
+            //System.out.println(path.size());
             List<Position> path = sim.getMap().findPathAS(agent.getCenterPosition(), human_target.getCenterPosition());
             if(!path.isEmpty()){
                 target = path.get(0);
@@ -32,7 +33,7 @@ public class FollowToHuman extends FollowPath{
         }
         ticksPerPathUpdate++;
         
-        System.out.println(agent.getPosition().getX() + " " + agent.getPosition().getY() + " " + target.getX() + " " + target.getY());
+        //System.out.println(agent.getPosition().getX() + " " + agent.getPosition().getY() + " " + target.getX() + " " + target.getY());
 
         handleMotion(agent);
     }
