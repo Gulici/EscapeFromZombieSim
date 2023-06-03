@@ -285,20 +285,21 @@ public class AStar {
     public Node findNodeByPosition(Position position){
         int x = position.intX();
         int y = position.intY();
-        Node wantedNode = new Node(nodeSize);
+        //Node wantedNode = new Node(nodeSize);
 
-        for(ArrayList<Node> nodeRow : nodeList){
-            for(Node node : nodeRow){
-                if (x >= node.getPosition().intX() &&
-                        x < (node.getPosition().intX() + nodeSize) &&
-                        y >= node.getPosition().intY() &&
-                        y < (node.getPosition().getY() + nodeSize)) {
-                    wantedNode = node;
-                    break;
-                }
-            }
-        }
-        return wantedNode;
+        // for(ArrayList<Node> nodeRow : nodeList){
+        //     for(Node node : nodeRow){
+        //         if (x >= node.getPosition().intX() &&
+        //                 x < (node.getPosition().intX() + nodeSize) &&
+        //                 y >= node.getPosition().intY() &&
+        //                 y < (node.getPosition().getY() + nodeSize)) {
+        //             wantedNode = node;
+        //             break;
+        //         }
+        //     }
+        // }
+        //System.out.println(nodeList.get(y/10).get(x/10) + " " + wantedNode.getCenterPosition());
+        return nodeList.get(y/10).get(x/10);
     }
     public Node findNodeByRowCol(int row, int col){
         for (ArrayList<Node> nodes : nodeList) {
