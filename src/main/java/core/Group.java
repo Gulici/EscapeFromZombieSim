@@ -28,4 +28,18 @@ public class Group extends TreeSet<Human> {
 
         return new Position(x/this.size(), y/this.size());
     }
+
+    public boolean remove(Human h) {
+        if(h == first()) {
+            if (size() > 1) {
+                h.setGroup(new Group(h));
+                h.resetPath();
+                return super.remove(h);
+            }
+            return false;
+        }
+        h.setGroup(new Group(h));
+        first().resetPath();
+        return super.remove(h);
+    }
 };

@@ -14,4 +14,6 @@ public class DeadHuman extends Agent{
         graphics2D.setColor(Color.red);
         graphics2D.fillRect(position.intX(), position.intY(), size.getWidth(), size.getHeight());
     }
+
+    public void kill() {}
 }

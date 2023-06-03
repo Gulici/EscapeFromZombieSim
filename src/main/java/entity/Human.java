@@ -69,8 +69,10 @@ public class Human extends Agent implements Comparable<Human> {
         }
     }
 
-    public void updateTarget() {
-        followPath = new FollowToHuman(group.first());
+    public void resetPath() {
+        System.out.println("resetting");
+        this.speed = 1;
+        followPath = new FollowPathToExit();
     }
 
     private void updateState() {
@@ -79,6 +81,7 @@ public class Human extends Agent implements Comparable<Human> {
                 if (pushCounter >= 5) {
                     state = "KnockOver";
                     knockOverCounter = 60;
+                    group.remove(this);
                     color = Color.YELLOW;
                 }
             }
@@ -143,5 +146,8 @@ public class Human extends Agent implements Comparable<Human> {
 
     public boolean isAlive(){
         return alive;
+    }
+    public void kill() {
+        group.remove(this);
     }
 }

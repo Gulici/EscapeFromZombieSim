@@ -111,4 +111,6 @@ public abstract class Agent extends Entity{
 
         return predictCollisionBox.collidesWith(otherBox);
     }
+
+    abstract public void kill();
 }
