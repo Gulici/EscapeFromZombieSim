@@ -38,4 +38,8 @@ public class FollowPath {
         return path.size();
     }
 
+    public List<Position> getPath() {
+        return path;
+    }
+
 }

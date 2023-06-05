@@ -1,12 +1,18 @@
 package entity;
 
 import controller.EntityController;
+import sim.Sim;
 
 import java.awt.*;
 
 public class DeadHuman extends Agent{
     public DeadHuman(EntityController entityController) {
         super(entityController);
+    }
+
+    @Override
+    public void update(Sim sim) {
+        handleCollisions(sim);
     }
 
     @Override

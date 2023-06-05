@@ -12,7 +12,7 @@ import core.Group;
 import core.Position;
 import java.awt.*;
 
-public class Human extends Agent implements Comparable<Human> {
+public class Human extends Agent {
 
     protected FollowPath followPath;
     Group group;
@@ -35,15 +35,11 @@ public class Human extends Agent implements Comparable<Human> {
         group = new Group(this);
     }
 
-    @Override
-    public int compareTo(Human h) {
-        return followPath.getLength() - h.getPathLength();
-    }
 
     public void calculateSpeed() {
         Position mean = group.meanPosition();
         double distance = this.getCenterPosition().distanceTo(mean);
-        double new_speed = this.speed - 0.05 *distance;
+        double new_speed = this.speed - 0.005 *distance;
         if (new_speed > 0) {
           this.motion = new Motion(new_speed);
         }
@@ -56,12 +52,14 @@ public class Human extends Agent implements Comparable<Human> {
         updateState();
         switch (state) {
             case "FollowPath" -> {
-                if (followPath instanceof FollowToHuman)
+                if (followPath instanceof FollowToHuman) {
                     ((FollowToHuman)followPath).setTarget(group.first());
-                followPath.update(this, sim); handleMotion();
+                }
+                followPath.update(this, sim);
                 super.update(sim);
             }
-            case "KnockOver" -> {}
+            case "KnockOver" -> {
+            }
             case "Trampled" -> {
                 alive = false;
                 sim.addToKillList(this);
@@ -70,9 +68,12 @@ public class Human extends Agent implements Comparable<Human> {
     }
 
     public void resetPath() {
-        System.out.println("resetting");
         this.speed = 1;
         followPath = new FollowPathToExit();
+    }
+
+    public boolean isKnockedOver() {
+        return state == "KnockOver";
     }
 
     private void updateState() {
@@ -81,13 +82,13 @@ public class Human extends Agent implements Comparable<Human> {
                 if (pushCounter >= 5) {
                     state = "KnockOver";
                     knockOverCounter = 60;
-                    group.remove(this);
                     color = Color.YELLOW;
                 }
             }
             case "KnockOver" -> {
                 if (pushCounter >= 20) {
                     state = "Trampled";
+                    group.remove(this);
                     break;
                 }
                 if (knockOverCounter > 0) {
@@ -103,22 +104,21 @@ public class Human extends Agent implements Comparable<Human> {
         }
     }
 
-    public void testCollision(Entity other, Sim sim) {
-        super.handleCollision(other, sim);
-    }
-
     @Override
     public void handleCollision(Entity other, Sim sim) {
         super.handleCollision(other, sim);
-        if(other instanceof Human) {
+        if(other instanceof Human && !(other instanceof Zombie)) {
             Human other_human = (Human)other;
+            if (other_human.isKnockedOver())
+                return;
             color = Color.BLUE;
             if(!this.group.contains(other_human)) {
                 Group merged = group.merge(other_human.getGroup());
                 this.group = merged;
                 other_human.setGroup(merged);
             }
-            followPath = new FollowToHuman(group.first());
+            if (this != group.first())
+                followPath = new FollowToHuman(group.first());
         }
     }
 
@@ -134,6 +134,12 @@ public class Human extends Agent implements Comparable<Human> {
     public void draw(Graphics2D graphics2D) {
         graphics2D.setColor(color);
         graphics2D.fillRect(getCenterPosition().intX(), getCenterPosition().intY(), size.getWidth(), size.getHeight());
+        //if (this == group.first()) {
+        //    graphics2D.setColor(Color.GREEN);
+        //    Position p = group.meanPosition();
+        //    graphics2D.fillRect(p.intX(), p.intY(), size.getWidth(), size.getHeight());
+        //}
+
     }
 
     public void increasePushCounter() {
@@ -149,5 +155,9 @@ public class Human extends Agent implements Comparable<Human> {
     }
     public void kill() {
         group.remove(this);
+    }
+
+    public String getState() {
+        return state;
     }
 }

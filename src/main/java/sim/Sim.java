@@ -154,9 +154,11 @@ public class Sim {
         for (Agent agent : agentsToEscape) {
             agentsList.remove(agent);
             entityList.remove(agent);
+            agent.kill();
             removeFromRegion(agent);
             escapeHumans.add(agent);
         }
+        agentsToEscape.clear();
     }
 
     public void addToKillList(Agent agent) {
@@ -190,6 +192,7 @@ public class Sim {
                     return;
             }
         }
+        zombie.resetPath();
 //        for (Entity other : entityList){
 
     }

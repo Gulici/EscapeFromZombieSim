@@ -5,7 +5,7 @@ package sim;
  */
 public class SimState {
     private int numberOfHumans = 100;
-    private int numberOfZombies = 0;
+    private int numberOfZombies = 20;
     private boolean running = false;
     private boolean wasStopped = true;
     private boolean setSim = false;
