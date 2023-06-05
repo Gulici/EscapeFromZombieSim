@@ -60,6 +60,6 @@ public class Zombie extends Human {
         graphics2D.setColor(Color.PINK);
         for(Position p : followPath.getPath())
             graphics2D.fillRect(p.intX(), p.intY(), size.getWidth(), size.getHeight());
-        graphics2D.drawRect(this.getCenterPosition().intX() - range/2, this.getCenterPosition().intY() - range/2, range, range);
+        graphics2D.drawArc(this.getCenterPosition().intX() - range/2 + size.getWidth()/2, this.getCenterPosition().intY() - range/2 + size.getHeight()/2, range, range, 0, 360);
     }
 }
