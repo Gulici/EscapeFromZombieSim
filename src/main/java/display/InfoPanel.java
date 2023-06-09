@@ -14,6 +14,7 @@ public class InfoPanel extends JPanel implements ActionListener {
     SimState simState;
     Dimension dimension;
     JButton startButton, stopButton, setButton;
+    JSlider zombieDamage;
 
     public InfoPanel (Sim sim, Input input, SimState simState) {
         this.sim = sim;
@@ -47,6 +48,17 @@ public class InfoPanel extends JPanel implements ActionListener {
         setButton.setText("Set");
         setButton.setEnabled(true);
         add(setButton);
+
+        JLabel zombieDamageLabel = new JLabel("Damage implied by zombie");
+        zombieDamageLabel.setBounds(10, 190, 200, 50);
+        add(zombieDamageLabel);
+        zombieDamage = new JSlider(0, 1000, 300);
+        zombieDamage.setVisible(true);
+        zombieDamage.setBounds(10,250, 200, 50);
+        zombieDamage.setEnabled(true);
+        zombieDamage.setPaintLabels(true);
+        zombieDamage.setLabelTable(zombieDamage.createStandardLabels(200));
+        add(zombieDamage);
     }
 
 //    public void paintComponent (Graphics graphics) {
@@ -62,6 +74,7 @@ public class InfoPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if(e.getSource().equals(startButton)) {
+            simState.setDamage(zombieDamage.getValue());
             simState.setRunning(true);
 
             stopButton.setEnabled(true);

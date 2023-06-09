@@ -11,14 +11,23 @@ import entity.Human;
 import java.awt.*;
 
 public class Zombie extends Human {
-    FollowPath followPath;
     private int range = 50;
     private Human target = null;
     int ticks = 0;
+    static private int damage;
     public Zombie(Sim sim, EntityController entityController) {
         super(sim, entityController);
         followPath = new FollowPathToExit();
         color = Color.GREEN;
+    }
+
+    public Zombie(Sim sim, EntityController entityController, Position p) {
+        this(sim, entityController);
+        setPosition(p);
+    }
+
+    public static void setDamage(int damage) {
+        Zombie.damage = damage;
     }
 
 
@@ -44,13 +53,16 @@ public class Zombie extends Human {
     @Override
     public void handleCollision(Entity other, Sim sim) {
         if (other instanceof Human && !(other instanceof Zombie))
-            ((Human)other).damage(150);
+            ((Human)other).damage(damage);
     }
 
     public boolean start_chasing(Entity en) {
         if (en instanceof Human && !(en instanceof Zombie) && getPosition().distanceTo(en.getPosition()) < range) {
-            followPath = new FollowToHuman((Human)en);
-            target = (Human)en;
+            Human target = (Human)en;
+            if(target.isZombified())
+                return false;
+            followPath = new FollowToHuman(target);
+            this.target = target;
             //System.out.println("Selected target");
             return true;
         }

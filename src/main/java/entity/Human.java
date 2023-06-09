@@ -43,6 +43,10 @@ public class Human extends Agent {
         this.group.damage(total_damage);
     }
 
+    public boolean isZombified() {
+        return state == "Zombified";
+    }
+
     public void decreaseHP(int damage) {
         hp -= damage;
         if (hp < 0) {
@@ -51,7 +55,6 @@ public class Human extends Agent {
         }
         if (damage > 100) {
             state = "Zombified";
-            System.out.println("Zombified");
         }
     }
 
@@ -124,6 +127,7 @@ public class Human extends Agent {
                 zombificationCounter--;
                 if (zombificationCounter == 0) {
                     System.out.println("Changed to zombie");
+                    sim.addToZombifiedList(this);
                 }
             }
             default -> state = "FollowPath";

@@ -21,6 +21,7 @@ public class Sim {
     private List<Agent> agentsToEscape;
     private List<Agent> deadAgents;
     private List<Agent> escapeHumans;
+    private List<Human> zombifiedHumans;
 
     private Map map;
 
@@ -31,6 +32,7 @@ public class Sim {
         deadAgents = Collections.synchronizedList(new ArrayList<>());
         agentsToEscape = Collections.synchronizedList(new ArrayList<>());
         escapeHumans = Collections.synchronizedList(new ArrayList<>());
+        zombifiedHumans = Collections.synchronizedList(new ArrayList<>());
         entityInRegions = new HashMap<>();
         input = new Input();
         map  = new Map(this);
@@ -139,6 +141,18 @@ public class Sim {
        map.resetNodes();
     }
     public void removeAgent() {
+        for (Human h: zombifiedHumans) {
+            agentsList.remove(h);
+            entityList.remove(h);
+            removeFromRegion(h);
+            h.kill();
+            Zombie z = new Zombie(this, new AgentController(), h.getCenterPosition());
+            agentsList.add(z);
+            entityList.add(z);
+            updateRegion(z);
+
+        }
+        zombifiedHumans.clear();
         for (Agent agent : agentsToKill) {
             agentsList.remove(agent);
             entityList.remove(agent);
@@ -169,6 +183,10 @@ public class Sim {
         agentsToEscape.add(agent);
     }
 
+    public void addToZombifiedList(Human h) {
+        zombifiedHumans.add(h);
+    }
+
     public List<Entity> getEntityList() {
         return entityList;
     }
@@ -192,6 +210,7 @@ public class Sim {
                     return;
             }
         }
+        System.out.println("resetting");
         zombie.resetPath();
 //        for (Entity other : entityList){
 
