@@ -2,6 +2,7 @@ package core;
 
 import java.util.HashSet;
 import entity.Human;
+import java.util.Random;
 
 @SuppressWarnings("serial")
 public class Group extends HashSet<Human> {
@@ -14,6 +15,21 @@ public class Group extends HashSet<Human> {
 
     public Human first() {
         return leader;
+    }
+
+    public static int randInt(int min, int max) {
+        Random rand = new Random();
+
+        int randomNum = rand.nextInt((max - min) + 1) + min;
+
+        return randomNum;
+    }
+
+    public void damage(int damage) {
+        int average_damage = damage / size();
+        for (Human h: this) {
+            h.decreaseHP(randInt(0, average_damage));
+        }
     }
 
     public Group merge(Group g) {

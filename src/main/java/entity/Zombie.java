@@ -42,7 +42,9 @@ public class Zombie extends Human {
     }
 
     @Override
-    public void handleCollisions(Sim sim) {
+    public void handleCollision(Entity other, Sim sim) {
+        if (other instanceof Human && !(other instanceof Zombie))
+            ((Human)other).damage(150);
     }
 
     public boolean start_chasing(Entity en) {

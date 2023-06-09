@@ -21,7 +21,10 @@ public class Human extends Agent {
     private String state;
     private int knockOverCounter;
     private int pushCounter;
+    private int hp = 1000;
     private boolean alive = true;
+    private Sim sim;
+    private int zombificationCounter = 60;
     public Human(Sim sim, EntityController entityController) {
         super(entityController);
         setSize(new Size(6,6));
@@ -33,6 +36,23 @@ public class Human extends Agent {
         this.motion = new Motion(this.speed);
         followPath = new FollowPathToExit();
         group = new Group(this);
+        this.sim = sim;
+    }
+
+    public void damage(int total_damage) {
+        this.group.damage(total_damage);
+    }
+
+    public void decreaseHP(int damage) {
+        hp -= damage;
+        if (hp < 0) {
+            sim.addToKillList(this);
+            return;
+        }
+        if (damage > 100) {
+            state = "Zombified";
+            System.out.println("Zombified");
+        }
     }
 
 
@@ -98,6 +118,12 @@ public class Human extends Agent {
                     state = "FollowPath";
                     pushCounter = 0;
                     color = Color.cyan;
+                }
+            }
+            case "Zombified" -> {
+                zombificationCounter--;
+                if (zombificationCounter == 0) {
+                    System.out.println("Changed to zombie");
                 }
             }
             default -> state = "FollowPath";
