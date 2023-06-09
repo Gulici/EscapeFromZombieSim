@@ -21,7 +21,7 @@ public class Human extends Agent {
     private String state;
     private int knockOverCounter;
     private int pushCounter;
-    private int hp = 1000;
+    private static int hp = 1000;
     private boolean alive = true;
     private Sim sim;
     private int zombificationCounter = 60;
@@ -37,6 +37,10 @@ public class Human extends Agent {
         followPath = new FollowPathToExit();
         group = new Group(this);
         this.sim = sim;
+    }
+
+    public static void setHP(int hp) {
+        Human.hp = hp;
     }
 
     public void damage(int total_damage) {

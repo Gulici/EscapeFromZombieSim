@@ -1,7 +1,5 @@
 package sim;
 
-import entity.Zombie;
-
 /*
     Class that's handle settings of simulation
  */
@@ -16,10 +14,6 @@ public class SimState {
 
     public SimState() {
 
-    }
-
-    public void setDamage(int damage) {
-        Zombie.setDamage(damage);
     }
 
     public int getNumberOfHumans() {

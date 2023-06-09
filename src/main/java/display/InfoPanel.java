@@ -3,6 +3,8 @@ package display;
 import input.Input;
 import sim.Sim;
 import sim.SimState;
+import entity.Zombie;
+import entity.Human;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +16,7 @@ public class InfoPanel extends JPanel implements ActionListener {
     SimState simState;
     Dimension dimension;
     JButton startButton, stopButton, setButton;
-    JSlider zombieDamage;
+    JSlider zombieDamage, humanHP;
 
     public InfoPanel (Sim sim, Input input, SimState simState) {
         this.sim = sim;
@@ -59,6 +61,17 @@ public class InfoPanel extends JPanel implements ActionListener {
         zombieDamage.setPaintLabels(true);
         zombieDamage.setLabelTable(zombieDamage.createStandardLabels(200));
         add(zombieDamage);
+        
+        JLabel humanHPLabel = new JLabel("Human HP");
+        humanHPLabel.setBounds(10, 310, 200, 50);
+        add(humanHPLabel);
+        humanHP = new JSlider(1, 1000, 1000);
+        humanHP.setVisible(true);
+        humanHP.setBounds(10, 370, 200, 50);
+        humanHP.setEnabled(true);
+        humanHP.setPaintLabels(true);
+        humanHP.setLabelTable(humanHP.createStandardLabels(200));
+        add(humanHP);
     }
 
 //    public void paintComponent (Graphics graphics) {
@@ -74,7 +87,8 @@ public class InfoPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if(e.getSource().equals(startButton)) {
-            simState.setDamage(zombieDamage.getValue());
+            Zombie.setDamage(zombieDamage.getValue());
+            Human.setHP(humanHP.getValue());
             simState.setRunning(true);
 
             stopButton.setEnabled(true);
