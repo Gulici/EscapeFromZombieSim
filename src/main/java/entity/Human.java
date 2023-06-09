@@ -21,9 +21,10 @@ public class Human extends Agent {
     private String state;
     private int knockOverCounter;
     private int pushCounter;
-    private static int hp = 1000;
     private boolean alive = true;
+    private static int hp = 1000;
     private static int changed = 0;
+    private static int damageToChange = 10;
     private Sim sim;
     private int zombificationCounter = 60;
     public Human(Sim sim, EntityController entityController) {
@@ -44,6 +45,10 @@ public class Human extends Agent {
         Human.hp = hp;
     }
 
+    public static void setDamageToChange(int damage) {
+        Human.damageToChange = damage;
+    }
+
     public void damage(int total_damage) {
         this.group.damage(total_damage);
     }
@@ -58,7 +63,7 @@ public class Human extends Agent {
             sim.addToKillList(this);
             return;
         }
-        if (damage > 10) {
+        if (damage > damageToChange) {
             state = "Zombified";
         }
     }

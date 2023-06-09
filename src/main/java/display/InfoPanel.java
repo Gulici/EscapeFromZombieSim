@@ -16,7 +16,7 @@ public class InfoPanel extends JPanel implements ActionListener {
     SimState simState;
     Dimension dimension;
     JButton startButton, stopButton, setButton;
-    JSlider zombieDamage, humanHP;
+    JSlider zombieDamage, humanHP, damageToChange;
 
     public InfoPanel (Sim sim, Input input, SimState simState) {
         this.sim = sim;
@@ -72,6 +72,17 @@ public class InfoPanel extends JPanel implements ActionListener {
         humanHP.setPaintLabels(true);
         humanHP.setLabelTable(humanHP.createStandardLabels(200));
         add(humanHP);
+
+        JLabel damageToChangeLabel = new JLabel("Minimum damage at once to change poison human");
+        damageToChangeLabel.setBounds(10, 430, 200, 50);
+        add(damageToChangeLabel);
+        damageToChange = new JSlider(0, 1000, 1000);
+        damageToChange.setVisible(true);
+        damageToChange.setBounds(10, 490, 200, 50);
+        damageToChange.setEnabled(true);
+        damageToChange.setPaintLabels(true);
+        damageToChange.setLabelTable(damageToChange.createStandardLabels(200));
+        add(damageToChange);
     }
 
 //    public void paintComponent (Graphics graphics) {
@@ -89,6 +100,7 @@ public class InfoPanel extends JPanel implements ActionListener {
         if(e.getSource().equals(startButton)) {
             Zombie.setDamage(zombieDamage.getValue());
             Human.setHP(humanHP.getValue());
+            Human.setDamageToChange(damageToChange.getValue());
             simState.setRunning(true);
 
             stopButton.setEnabled(true);
