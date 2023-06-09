@@ -1,6 +1,6 @@
 package entity;
 import ai.FollowPath;
-import ai.FollowPathToExit;
+import ai.FollowPathToRandomPos;
 import ai.FollowToHuman;
 import controller.EntityController;
 import java.awt.Color;
@@ -17,7 +17,7 @@ public class Zombie extends Human {
     static private int damage;
     public Zombie(Sim sim, EntityController entityController) {
         super(sim, entityController);
-        followPath = new FollowPathToExit();
+        followPath = new FollowPathToRandomPos();
         color = Color.GREEN;
     }
 
@@ -28,6 +28,12 @@ public class Zombie extends Human {
 
     public static void setDamage(int damage) {
         Zombie.damage = damage;
+    }
+
+    @Override
+    public void resetPath() {
+        if (!(followPath instanceof FollowPathToRandomPos))
+            followPath = new FollowPathToRandomPos();
     }
 
 
@@ -52,7 +58,7 @@ public class Zombie extends Human {
 
     @Override
     public void handleCollision(Entity other, Sim sim) {
-        if (other instanceof Human && !(other instanceof Zombie))
+        if (other instanceof Human && !(other instanceof Zombie) && ticks == 30)
             ((Human)other).damage(damage);
     }
 

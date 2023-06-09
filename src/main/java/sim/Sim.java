@@ -210,7 +210,6 @@ public class Sim {
                     return;
             }
         }
-        System.out.println("resetting");
         zombie.resetPath();
 //        for (Entity other : entityList){
 

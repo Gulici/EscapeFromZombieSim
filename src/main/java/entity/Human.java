@@ -23,6 +23,7 @@ public class Human extends Agent {
     private int pushCounter;
     private static int hp = 1000;
     private boolean alive = true;
+    private static int changed = 0;
     private Sim sim;
     private int zombificationCounter = 60;
     public Human(Sim sim, EntityController entityController) {
@@ -57,7 +58,7 @@ public class Human extends Agent {
             sim.addToKillList(this);
             return;
         }
-        if (damage > 100) {
+        if (damage > 10) {
             state = "Zombified";
         }
     }
@@ -131,6 +132,8 @@ public class Human extends Agent {
                 zombificationCounter--;
                 if (zombificationCounter == 0) {
                     System.out.println("Changed to zombie");
+                    changed++;
+                    System.out.println(changed);
                     sim.addToZombifiedList(this);
                 }
             }
