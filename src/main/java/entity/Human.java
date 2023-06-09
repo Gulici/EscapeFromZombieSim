@@ -92,6 +92,13 @@ public class Human extends Agent {
                 alive = false;
                 sim.addToKillList(this);
             }
+            case "Zombified" -> {
+                if (followPath instanceof FollowToHuman) {
+                    ((FollowToHuman)followPath).setTarget(group.first());
+                }
+                followPath.update(this, sim);
+                super.update(sim);
+            }
         }
     }
 
