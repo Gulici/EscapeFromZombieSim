@@ -10,13 +10,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Hashtable;
 
 public class InfoPanel extends JPanel implements ActionListener {
     Sim sim;
     SimState simState;
     Dimension dimension;
     JButton startButton, stopButton, setButton;
-    JSlider zombieDamage, humanHP, damageToChange;
+    JSlider zombieDamage, humanHP, damageToChange, humanSpeed;
 
     public InfoPanel (Sim sim, Input input, SimState simState) {
         this.sim = sim;
@@ -86,6 +87,21 @@ public class InfoPanel extends JPanel implements ActionListener {
         damageToChange.setPaintLabels(true);
         damageToChange.setLabelTable(damageToChange.createStandardLabels(200));
         add(damageToChange);
+
+        JLabel humanSpeedLabel = new JLabel("Human speed");
+        humanSpeedLabel.setBounds(10, 430, 200, 50);
+        add(humanSpeedLabel);
+        humanSpeed = new JSlider(0, 20, 10);
+        humanSpeed.setVisible(true);
+        humanSpeed.setBounds(10, 490, 200, 50);
+        humanSpeed.setEnabled(true);
+        humanSpeed.setPaintLabels(true);
+        Hashtable<Integer, JLabel> values = new Hashtable<Integer, JLabel>();
+        for(int i = 0; i <= 20; i+=2) {
+            values.put(i, new JLabel(String.valueOf((double)i/10)));
+        }
+        humanSpeed.setLabelTable(values);
+        add(humanSpeed);
     }
 
 //    public void paintComponent (Graphics graphics) {
@@ -104,6 +120,7 @@ public class InfoPanel extends JPanel implements ActionListener {
             Zombie.setDamage(zombieDamage.getValue());
             Human.setHP(humanHP.getValue());
             Human.setDamageToChange(damageToChange.getValue());
+            Human.setDefaultSpeed((double)humanSpeed.getValue()/10);
             simState.setRunning(true);
 
             stopButton.setEnabled(true);

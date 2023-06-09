@@ -17,7 +17,7 @@ public class Human extends Agent {
     protected FollowPath followPath;
     Group group;
     protected Color color;
-    private double speed = 1;
+    private double speed;
     private String state;
     private int knockOverCounter;
     private int pushCounter;
@@ -25,6 +25,7 @@ public class Human extends Agent {
     private static int hp = 1000;
     private static int changed = 0;
     private static int damageToChange = 10;
+    private static double default_speed;
     private Sim sim;
     private int zombificationCounter = 60;
     public Human(Sim sim, EntityController entityController) {
@@ -35,6 +36,7 @@ public class Human extends Agent {
         pushCounter = 0;
         knockOverCounter = 0;
         state = "FollowPath";
+        this.speed = Human.default_speed;
         this.motion = new Motion(this.speed);
         followPath = new FollowPathToExit();
         group = new Group(this);
@@ -47,6 +49,10 @@ public class Human extends Agent {
 
     public static void setDamageToChange(int damage) {
         Human.damageToChange = damage;
+    }
+
+    public static void setDefaultSpeed(double speed) {
+        Human.default_speed = speed;
     }
 
     public void damage(int total_damage) {
@@ -108,7 +114,7 @@ public class Human extends Agent {
     }
 
     public void resetPath() {
-        this.speed = 1;
+        this.speed = default_speed;
         followPath = new FollowPathToExit();
     }
 
