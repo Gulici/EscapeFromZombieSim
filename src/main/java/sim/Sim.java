@@ -201,7 +201,8 @@ public class Sim {
         row = Math.max(row, 25);
         for(int i = col - range/2; i < col + range/2; i+=25)
             for(int j = row - range/2; j < row + range/2; j+=25) {
-                regions.add(findRegionKeys(j, i));
+                if(j < 100 && i < 100 && j >=0 && i >=0)
+                    regions.add(findRegionKeys(j, i));
             }
         //System.out.println(regions);
 
