@@ -3,8 +3,8 @@ package display;
 import input.Input;
 import sim.Sim;
 import sim.SimState;
-import entity.Zombie;
-import entity.Human;
+import configuration.HumanConf;
+import configuration.ZombieConf;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +17,8 @@ public class InfoPanel extends JPanel implements ActionListener {
     SimState simState;
     Dimension dimension;
     JButton startButton, stopButton, setButton;
-    JSlider zombieDamage, humanHP, damageToChange, humanSpeed;
+    JSlider zombieDamage, humanHP, damageToChange, humanSpeed, zombieSpeed, zombieRange;
+    JCheckBox showZombieRange, showZombiePath;
 
     public InfoPanel (Sim sim, Input input, SimState simState) {
         this.sim = sim;
@@ -102,6 +103,34 @@ public class InfoPanel extends JPanel implements ActionListener {
         }
         humanSpeed.setLabelTable(values);
         add(humanSpeed);
+
+        JLabel zombieSpeedLabel = new JLabel("Zombie speed");
+        zombieSpeedLabel.setBounds(10, 430, 200, 50);
+        add(zombieSpeedLabel);
+        zombieSpeed = new JSlider(0, 20, 10);
+        zombieSpeed.setVisible(true);
+        zombieSpeed.setBounds(10, 490, 200, 50);
+        zombieSpeed.setEnabled(true);
+        zombieSpeed.setPaintLabels(true);
+        zombieSpeed.setLabelTable(values);
+        add(zombieSpeed);
+
+        JLabel zombieRangeLabel = new JLabel("Range where zombie sees");
+        zombieRangeLabel.setBounds(10, 430, 200, 50);
+        add(zombieRangeLabel);
+        zombieRange = new JSlider(0, 50, 50);
+        zombieRange.setVisible(true);
+        zombieRange.setBounds(10, 490, 200, 50);
+        zombieRange.setEnabled(true);
+        zombieRange.setPaintLabels(true);
+        zombieRange.setLabelTable(zombieRange.createStandardLabels(5));
+        add(zombieRange);
+
+        showZombieRange = new JCheckBox("Show zombie range", true);
+        add(showZombieRange);
+
+        showZombiePath = new JCheckBox("Show zombie path", false);
+        add(showZombiePath);
     }
 
 //    public void paintComponent (Graphics graphics) {
@@ -117,10 +146,7 @@ public class InfoPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
         if(e.getSource().equals(startButton)) {
-            Zombie.setDamage(zombieDamage.getValue());
-            Human.setHP(humanHP.getValue());
-            Human.setDamageToChange(damageToChange.getValue());
-            Human.setDefaultSpeed((double)humanSpeed.getValue()/10);
+            //Zombie.setDefaultSpeed((double)zombieSpeed.getValue()/10);
             simState.setRunning(true);
 
             stopButton.setEnabled(true);
@@ -137,6 +163,15 @@ public class InfoPanel extends JPanel implements ActionListener {
             stopButton.setEnabled(false);
         }
         if (e.getSource().equals(setButton)) {
+            ZombieConf.damage = zombieDamage.getValue();
+            ZombieConf.defaultSpeed = (double)zombieSpeed.getValue()/10;
+            ZombieConf.range = zombieRange.getValue();
+            ZombieConf.showRange = showZombieRange.isSelected();
+            ZombieConf.showPath = showZombiePath.isSelected();
+
+            HumanConf.hp = humanHP.getValue();
+            HumanConf.damageToChange = damageToChange.getValue();
+            HumanConf.defaultSpeed = (double)humanSpeed.getValue()/10;
             simState.setSetSim(true);
 
             startButton.setEnabled(true);

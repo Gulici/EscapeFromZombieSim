@@ -5,6 +5,7 @@ import controller.ManualController;
 import display.Display;
 import entity.*;
 import input.Input;
+import configuration.ZombieConf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -192,7 +193,7 @@ public class Sim {
     }
 
     public void chaseInRangeEntities(Zombie zombie) {
-        int range = zombie.getRange();
+        int range = ZombieConf.range;
         int row = zombie.getPosition().getRow();
         int col = zombie.getPosition().getCol();
         List<Integer> regions = new ArrayList<Integer>();

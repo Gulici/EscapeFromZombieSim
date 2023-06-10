@@ -7,6 +7,7 @@ import controller.EntityController;
 import java.lang.Comparable;
 import core.Motion;
 import core.Size;
+import configuration.HumanConf;
 import sim.Sim;
 import core.Group;
 import core.Position;
@@ -17,50 +18,42 @@ public class Human extends Agent {
     protected FollowPath followPath;
     Group group;
     protected Color color;
-    private double speed;
+    protected double speed;
     private String state;
     private int knockOverCounter;
     private int pushCounter;
     private boolean alive = true;
-    private static int hp = 1000;
-    private static int changed = 0;
-    private static int damageToChange = 10;
-    private static double default_speed;
+    public static int changed = 0;
     private Sim sim;
+    private int hp;
     private int zombificationCounter = 60;
     public Human(Sim sim, EntityController entityController) {
         super(entityController);
         setSize(new Size(6,6));
         setPosition(sim.getMap().getRandomPosition());
-        color = Color.CYAN;
-        pushCounter = 0;
-        knockOverCounter = 0;
+        initializeState();
         state = "FollowPath";
-        this.speed = Human.default_speed;
-        this.motion = new Motion(this.speed);
-        followPath = new FollowPathToExit();
         group = new Group(this);
         this.sim = sim;
     }
 
-    public static void setHP(int hp) {
-        Human.hp = hp;
+    protected void initializeState() {
+        color = Color.CYAN;
+        pushCounter = 0;
+        knockOverCounter = 0;
+        hp = HumanConf.hp;
+        this.speed = HumanConf.defaultSpeed;
+        this.motion = new Motion(this.speed);
+        followPath = new FollowPathToExit();
     }
 
-    public static void setDamageToChange(int damage) {
-        Human.damageToChange = damage;
-    }
 
-    public static void setDefaultSpeed(double speed) {
-        Human.default_speed = speed;
+    public boolean isZombified() {
+        return state == "Zombified";
     }
 
     public void damage(int total_damage) {
         this.group.damage(total_damage);
-    }
-
-    public boolean isZombified() {
-        return state == "Zombified";
     }
 
     public void decreaseHP(int damage) {
@@ -69,7 +62,7 @@ public class Human extends Agent {
             sim.addToKillList(this);
             return;
         }
-        if (damage > damageToChange) {
+        if (damage > HumanConf.damageToChange) {
             state = "Zombified";
         }
     }
@@ -114,7 +107,7 @@ public class Human extends Agent {
     }
 
     public void resetPath() {
-        this.speed = default_speed;
+        this.speed = HumanConf.defaultSpeed;
         followPath = new FollowPathToExit();
     }
 

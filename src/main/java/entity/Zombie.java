@@ -5,29 +5,31 @@ import ai.FollowToHuman;
 import controller.EntityController;
 import java.awt.Color;
 import sim.Sim;
+import configuration.ZombieConf;
 import core.Size;
 import core.Position;
+import core.Motion;
 import entity.Human;
 import java.awt.*;
 
 public class Zombie extends Human {
-    private int range = 50;
     private Human target = null;
     int ticks = 0;
-    static private int damage;
     public Zombie(Sim sim, EntityController entityController) {
         super(sim, entityController);
-        followPath = new FollowPathToRandomPos();
         color = Color.GREEN;
+    }
+
+    @Override
+    protected void initializeState() {
+        this.speed = ZombieConf.defaultSpeed;
+        this.motion = new Motion(this.speed);
+        followPath = new FollowPathToRandomPos();
     }
 
     public Zombie(Sim sim, EntityController entityController, Position p) {
         this(sim, entityController);
         setPosition(p);
-    }
-
-    public static void setDamage(int damage) {
-        Zombie.damage = damage;
     }
 
     @Override
@@ -36,10 +38,6 @@ public class Zombie extends Human {
             followPath = new FollowPathToRandomPos();
     }
 
-
-    public int getRange() {
-        return range;
-    }
 
     @Override
     public void update(Sim sim) {
@@ -59,11 +57,11 @@ public class Zombie extends Human {
     @Override
     public void handleCollision(Entity other, Sim sim) {
         if (other instanceof Human && !(other instanceof Zombie) && ticks == 30)
-            ((Human)other).damage(damage);
+            ((Human)other).damage(ZombieConf.damage);
     }
 
     public boolean start_chasing(Entity en) {
-        if (en instanceof Human && !(en instanceof Zombie) && getPosition().distanceTo(en.getPosition()) < range) {
+        if (en instanceof Human && !(en instanceof Zombie) && getPosition().distanceTo(en.getPosition()) < ZombieConf.range) {
             Human target = (Human)en;
             if(target.isZombified())
                 return false;
@@ -78,8 +76,11 @@ public class Zombie extends Human {
     public void draw(Graphics2D graphics2D) {
         super.draw(graphics2D);
         graphics2D.setColor(Color.PINK);
-        for(Position p : followPath.getPath())
-            graphics2D.fillRect(p.intX(), p.intY(), size.getWidth(), size.getHeight());
-        graphics2D.drawArc(this.getCenterPosition().intX() - range/2 + size.getWidth()/2, this.getCenterPosition().intY() - range/2 + size.getHeight()/2, range, range, 0, 360);
+        if(ZombieConf.showPath) {
+            for(Position p : followPath.getPath())
+                graphics2D.fillRect(p.intX(), p.intY(), size.getWidth(), size.getHeight());
+        }
+        if(ZombieConf.showRange)
+            graphics2D.drawArc(this.getCenterPosition().intX() - ZombieConf.range + size.getWidth()/2, this.getCenterPosition().intY() - ZombieConf.range + size.getHeight()/2, ZombieConf.range * 2, ZombieConf.range * 2, 0, 360);
     }
 }
