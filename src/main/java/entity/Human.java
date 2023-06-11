@@ -23,9 +23,10 @@ public class Human extends Agent {
     private int knockOverCounter;
     private int pushCounter;
     private boolean alive = true;
+    private int ticks = 0;
     public static int changed = 0;
-    private Sim sim;
-    private int hp;
+    protected Sim sim;
+    protected int hp;
     private int zombificationCounter = 60;
     public Human(Sim sim, EntityController entityController) {
         super(entityController);
@@ -82,6 +83,9 @@ public class Human extends Agent {
     @Override
     public void update(Sim sim) {
         updateState();
+        if (ticks == 30)
+            ticks = 0;
+        ticks++;
         switch (state) {
             case "FollowPath" -> {
                 if (followPath instanceof FollowToHuman) {
@@ -108,6 +112,7 @@ public class Human extends Agent {
 
     public void resetPath() {
         this.speed = HumanConf.defaultSpeed;
+        motion = new Motion(speed);
         followPath = new FollowPathToExit();
     }
 
@@ -167,6 +172,10 @@ public class Human extends Agent {
             }
             if (this != group.first())
                 followPath = new FollowToHuman(group.first());
+        }
+
+        if(other instanceof Zombie && ticks == 30) {
+            ((Zombie)other).damage(group.getTotalDamage(HumanConf.damage));
         }
     }
 

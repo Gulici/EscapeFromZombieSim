@@ -9,12 +9,13 @@ import configuration.ZombieConf;
 import core.Size;
 import core.Position;
 import core.Motion;
+import core.Group;
 import entity.Human;
 import java.awt.*;
 
 public class Zombie extends Human {
     private Human target = null;
-    int ticks = 0;
+    private int ticks = 0;
     public Zombie(Sim sim, EntityController entityController) {
         super(sim, entityController);
         color = Color.GREEN;
@@ -24,6 +25,7 @@ public class Zombie extends Human {
     protected void initializeState() {
         this.speed = ZombieConf.defaultSpeed;
         this.motion = new Motion(this.speed);
+        hp = 1000;
         followPath = new FollowPathToRandomPos();
     }
 
@@ -33,7 +35,18 @@ public class Zombie extends Human {
     }
 
     @Override
+    public void decreaseHP(int damage) {
+        hp -= damage;
+        if (hp < 0) {
+            sim.addToKillList(this);
+            return;
+        }
+    }
+
+    @Override
     public void resetPath() {
+        this.speed = ZombieConf.defaultSpeed;
+        motion = new Motion(speed);
         if (!(followPath instanceof FollowPathToRandomPos))
             followPath = new FollowPathToRandomPos();
     }
@@ -41,9 +54,13 @@ public class Zombie extends Human {
 
     @Override
     public void update(Sim sim) {
-        if (ticks == 30) {
-            sim.chaseInRangeEntities(this);
+        if (ticks == 30){
             ticks = 0;
+            if(this.group.first() == this) 
+                sim.chaseInRangeEntities(this);
+        }
+        else if (followPath instanceof FollowToHuman && this.group.first() != this) {
+            ((FollowToHuman)followPath).setTarget(group.first());
         }
         ticks++;
         followPath.update(this, sim);
@@ -57,7 +74,21 @@ public class Zombie extends Human {
     @Override
     public void handleCollision(Entity other, Sim sim) {
         if (other instanceof Human && !(other instanceof Zombie) && ticks == 30)
-            ((Human)other).damage(ZombieConf.damage);
+            ((Human)other).damage(group.getTotalDamage(ZombieConf.damage));
+
+
+        //if(other instanceof Zombie ) {
+        //    Zombie other_zombie = (Zombie)other;
+        //    if(!this.group.contains(other_zombie)) {
+        //        Group merged = group.merge(other_zombie.getGroup());
+        //        this.group = merged;
+        //        other_zombie.setGroup(merged);
+        //    }
+        //    if (this != group.first()) {
+        //        followPath = new FollowToHuman(group.first());
+        //        System.out.println("asdf");
+        //    }
+        //}
     }
 
     public boolean start_chasing(Entity en) {

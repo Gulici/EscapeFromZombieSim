@@ -13,6 +13,10 @@ public class Group extends HashSet<Human> {
         leader = agent;
     }
 
+    public int getTotalDamage(int unit_damage) {
+        return size() * unit_damage;
+    }
+
     public Human first() {
         return leader;
     }
