@@ -23,8 +23,9 @@ public class Sim {
     private List<Agent> deadAgents;
     private List<Agent> escapeHumans;
     private List<Human> zombifiedHumans;
-
     private Map map;
+    private Stats stats;
+    private long numberOfUpadates;
 
     public Sim(SimState simState){
         entityList = Collections.synchronizedList(new ArrayList<>());
@@ -41,12 +42,16 @@ public class Sim {
         entityList.addAll(map.getWalls());
         entityList.addAll(map.getExits());
         display = new Display(input, this, simState);
+
+        stats = new Stats();
+        numberOfUpadates = 0L;
     }
 
     public void update(){
         entityList.forEach(entity -> entity.update(this));
         //agentsList.forEach(agent -> agent.update(this));
         removeAgent();
+        numberOfUpadates++;
     }
 
     public void render(){
@@ -178,10 +183,12 @@ public class Sim {
 
     public void addToKillList(Agent agent) {
         agentsToKill.add(agent);
+        stats.addDead(numberOfUpadates);
     }
 
     public void addToEscapeList(Agent agent) {
         agentsToEscape.add(agent);
+        stats.addEscaped(numberOfUpadates);
     }
 
     public void addToZombifiedList(Human h) {

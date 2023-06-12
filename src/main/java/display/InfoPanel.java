@@ -19,6 +19,7 @@ public class InfoPanel extends JPanel implements ActionListener {
     JButton startButton, stopButton, setButton;
     JSlider zombieDamage, humanHP, damageToChange, humanSpeed, zombieSpeed, zombieRange;
     JCheckBox showZombieRange, showZombiePath;
+    LineChart escapedChart, deadChart;
 
     public InfoPanel (Sim sim, Input input, SimState simState) {
         this.sim = sim;
@@ -131,6 +132,9 @@ public class InfoPanel extends JPanel implements ActionListener {
 
         showZombiePath = new JCheckBox("Show zombie path", false);
         add(showZombiePath);
+
+        escapedChart = new LineChart("Escaped Humans","escaped",10,550);
+        deadChart = new LineChart("Dead Humans","dead",10,610);
     }
 
 //    public void paintComponent (Graphics graphics) {
@@ -153,6 +157,9 @@ public class InfoPanel extends JPanel implements ActionListener {
             startButton.setEnabled(false);
             setButton.setEnabled(false);
 
+            escapedChart.setVisible(false);
+            deadChart.setVisible(false);
+
         }
         if (e.getSource().equals(stopButton)) {
             simState.setRunning(false);
@@ -161,6 +168,14 @@ public class InfoPanel extends JPanel implements ActionListener {
             startButton.setEnabled(true);
             setButton.setEnabled(true);
             stopButton.setEnabled(false);
+
+            escapedChart = new LineChart("Escaped Humans","escaped",10,550);
+            escapedChart.setVisible(true);
+            add(escapedChart);
+
+            deadChart = new LineChart("Dead Humans","dead",10,610);
+            deadChart.setVisible(true);
+            add(deadChart);
         }
         if (e.getSource().equals(setButton)) {
             ZombieConf.damage = zombieDamage.getValue();
