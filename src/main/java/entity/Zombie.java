@@ -73,22 +73,27 @@ public class Zombie extends Human {
 
     @Override
     public void handleCollision(Entity other, Sim sim) {
+        handleWallCollision(other, sim);
+
         if (other instanceof Human && !(other instanceof Zombie) && ticks == 30)
             ((Human)other).damage(group.getTotalDamage(ZombieConf.damage));
 
 
-        //if(other instanceof Zombie ) {
-        //    Zombie other_zombie = (Zombie)other;
-        //    if(!this.group.contains(other_zombie)) {
-        //        Group merged = group.merge(other_zombie.getGroup());
-        //        this.group = merged;
-        //        other_zombie.setGroup(merged);
-        //    }
-        //    if (this != group.first()) {
-        //        followPath = new FollowToHuman(group.first());
-        //        System.out.println("asdf");
-        //    }
-        //}
+        if(other instanceof Zombie ) {
+            Zombie other_zombie = (Zombie)other;
+            if(!this.group.contains(other_zombie)) {
+                Group merged = group.merge(other_zombie.getGroup());
+                this.group = merged;
+                other_zombie.setGroup(merged);
+            }
+            if (this != group.first()) {
+                if (!(followPath instanceof FollowToHuman))
+                    followPath = new FollowToHuman(group.first());
+                else
+                    ((FollowToHuman)followPath).setTarget(group.first());
+                //System.out.println("asdf");
+            }
+        }
     }
 
     public boolean start_chasing(Entity en) {

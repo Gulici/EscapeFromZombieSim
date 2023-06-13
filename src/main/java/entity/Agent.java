@@ -32,10 +32,14 @@ public abstract class Agent extends Entity{
     protected void handleMotion(){
         motion.update(entityController);
     }
-    protected void handleCollision(Entity other, Sim sim){
+
+    protected void handleWallCollision(Entity other, Sim sim) {
         if(other instanceof Wall ) {
             motion.stop(willCollideX(other.getCollisionBox()), willCollideY(other.getCollisionBox()));
         }
+    }
+    protected void handleCollision(Entity other, Sim sim){
+        handleWallCollision(other, sim);
 
         if(other instanceof Human) {
             //push him

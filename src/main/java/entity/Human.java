@@ -170,10 +170,14 @@ public class Human extends Agent {
                 this.group = merged;
                 other_human.setGroup(merged);
             }
-            if (this != group.first())
-                followPath = new FollowToHuman(group.first());
+            if (this != group.first()) {
+                if (!(followPath instanceof FollowToHuman))
+                    followPath = new FollowToHuman(group.first());
+                else
+                    ((FollowToHuman)followPath).setTarget(group.first());
+                //System.out.println("asdf");
+            }
         }
-
         if(other instanceof Zombie && ticks == 30) {
             ((Zombie)other).damage(group.getTotalDamage(HumanConf.damage));
         }
