@@ -92,7 +92,7 @@ public class InfoPanel extends JPanel implements ActionListener {
         JLabel damageToChangeLabel = new JLabel("Minimum damage at once to change poison human");
         damageToChangeLabel.setBounds(10, 430, 200, 50);
         add(damageToChangeLabel);
-        damageToChange = new JSlider(0, 1000, 1000);
+        damageToChange = new JSlider(0, 1000, 100);
         damageToChange.setVisible(true);
         damageToChange.setBounds(10, 490, 200, 50);
         damageToChange.setEnabled(true);
