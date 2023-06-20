@@ -5,6 +5,9 @@ import sim.Sim;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Class responsible for exits.
+ */
 public class Exit extends Entity {
 
     public Exit() {

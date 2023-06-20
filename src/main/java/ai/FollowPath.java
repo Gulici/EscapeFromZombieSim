@@ -8,7 +8,10 @@ import sim.Sim;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FollowPath {
+/**
+ * Abstract class that handle motion through path of agent.
+ */
+public abstract class FollowPath {
     protected Position target;
     protected List<Position> path;
 

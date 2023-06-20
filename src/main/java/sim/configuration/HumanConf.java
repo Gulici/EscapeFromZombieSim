@@ -1,7 +1,7 @@
-package configuration;
+package sim.configuration;
 
 /**
- * Defines global configuration variables for entity.Human class
+ * Defines global sim.configuration variables for entity.Human class
  */
 public class HumanConf {
     public static int hp = 1000;

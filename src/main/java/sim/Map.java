@@ -1,19 +1,20 @@
 package sim;
 
 import ai.AStar;
-import ai.Dijkstra;
 import core.MapReader;
 import core.Node;
 import core.Position;
-import entity.Entity;
 import entity.Exit;
 import entity.Wall;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+
+/**
+ * Class responsible for creating and handling map of simulation.
+ */
 public class Map {
     private final int tileSize = 10;
     private final int colNum = 100;
@@ -27,6 +28,12 @@ public class Map {
     private AStar aStar;
     private Position exitPositionLeft, exitPositionRight;
 
+    /**
+     * @param sim
+     * Constructor of Map object.
+     * Creating Node object for each tile of map.
+     * Reading map data from .txt file.
+     */
     public Map(Sim sim){
         nodeList = new ArrayList<>();
 
@@ -46,6 +53,11 @@ public class Map {
         createMap(sim);
     }
 
+    /**
+     * @param sim
+     * Method that setting walls and exits in correct places.
+     * At end invoke pathfinder to calculate the shortest paths from each tile to exit.
+     */
     public void createMap(Sim sim){
         int[][] mapData = mapReader.getTiles();
         ArrayList<Position> wallsPosition = new ArrayList<>();
@@ -118,11 +130,6 @@ public class Map {
         aStar.findPath(start,target);
         return aStar.getPath();
     }
-
-    public void draw(Graphics2D graphics2D){
-        nodeList.forEach(nodes -> nodes.forEach(node -> node.draw(graphics2D)));
-    }
-
     public Position getRandomPosition() {
         while (true) {
             int row = (int)(Math.random() * rowNum);

@@ -2,6 +2,9 @@ package controller;
 
 import core.Position;
 
+/**
+ * Class that is managing motion of agents. It is interface between FollowPath and Agent classes.
+ */
 public class AgentController implements EntityController {
 
     private boolean up;

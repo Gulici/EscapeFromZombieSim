@@ -1,16 +1,13 @@
 package entity;
-import ai.FollowPath;
 import ai.FollowPathToRandomPos;
 import ai.FollowToHuman;
 import controller.EntityController;
 import java.awt.Color;
 import sim.Sim;
-import configuration.ZombieConf;
-import core.Size;
+import sim.configuration.ZombieConf;
 import core.Position;
 import core.Motion;
 import core.Group;
-import entity.Human;
 import java.awt.*;
 
 /**
@@ -139,12 +136,12 @@ public class Zombie extends Human {
         super.draw(graphics2D);
         graphics2D.setColor(Color.PINK);
         if(ZombieConf.showPath) {
-            // Drawing zombies path if it's selected in configuration.
+            // Drawing zombies path if it's selected in sim.configuration.
             for(Position p : followPath.getPath())
                 graphics2D.fillRect(p.intX(), p.intY(), size.getWidth(), size.getHeight());
         }
         if(ZombieConf.showRange)
-            // Drawing zombie range if it's selected in configuration.
+            // Drawing zombie range if it's selected in sim.configuration.
             graphics2D.drawArc(this.getCenterPosition().intX() - ZombieConf.range + size.getWidth()/2, this.getCenterPosition().intY() - ZombieConf.range + size.getHeight()/2, ZombieConf.range * 2, ZombieConf.range * 2, 0, 360);
     }
 }

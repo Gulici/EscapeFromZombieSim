@@ -21,9 +21,6 @@ public class Node {
     public Node(int width, int height) {
         size = new Size(width, height);
     }
-    public Node(int sideLength){
-        size = new Size(sideLength,sideLength);
-    }
 
     public Position getCenterPosition(){
         double x = position.getX() + (double) size.getWidth()/2;
@@ -31,14 +28,6 @@ public class Node {
 
         return new Position(x,y);
     }
-    public void draw(Graphics2D g2){
-
-//            if(target){
-//                g2.setColor(Color.orange);
-//                g2.fillRect(position.intX(), position.intY(), size.getWidth(), size.getHeight());
-//            }
-    }
-
     public void setPosition(int col, int row) {
         this.col = col;
         this.row = row;
@@ -74,10 +63,6 @@ public class Node {
 
     public void setGCost(double vCost) {
         this.gCost = vCost;
-    }
-
-    public double getHCost() {
-        return hCost;
     }
 
     public int getCol() {
@@ -130,4 +115,5 @@ public class Node {
     public void setPathToExitRight(ArrayList<Position> pathToExitRight) {
         this.pathToExitRight = pathToExitRight;
     }
+
 }

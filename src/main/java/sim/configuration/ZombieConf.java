@@ -1,7 +1,7 @@
-package configuration;
+package sim.configuration;
 
 /**
- * Defines global configuration variables for class entity.Zombie
+ * Defines global sim.configuration variables for class entity.Zombie
  */
 public class ZombieConf {
     public static double defaultSpeed;

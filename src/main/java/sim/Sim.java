@@ -1,20 +1,21 @@
 package sim;
 
 import controller.AgentController;
-import controller.ManualController;
 import display.Display;
 import entity.*;
-import input.Input;
-import configuration.ZombieConf;
+import sim.configuration.ZombieConf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Collections;
 
+/**
+ * Class that handle course of simulation.
+ * Store all information about entities.
+ */
 public class Sim {
     private Display display;
-    private Input input;
     private List<Entity> entityList;
     private HashMap<Integer,ArrayList<Entity>> entityInRegions;
     private List<Agent> agentsList;
@@ -26,6 +27,11 @@ public class Sim {
 
     private Map map;
 
+    /**
+     * Constructor of Sim class.
+     * Initialize all fields.
+     * @param simState
+     */
     public Sim(SimState simState){
         entityList = Collections.synchronizedList(new ArrayList<>());
         agentsList = Collections.synchronizedList(new ArrayList<>());
@@ -35,24 +41,32 @@ public class Sim {
         escapeHumans = Collections.synchronizedList(new ArrayList<>());
         zombifiedHumans = Collections.synchronizedList(new ArrayList<>());
         entityInRegions = new HashMap<>();
-        input = new Input();
         map  = new Map(this);
 
         entityList.addAll(map.getWalls());
         entityList.addAll(map.getExits());
-        display = new Display(input, this, simState);
+        display = new Display( this, simState);
     }
 
+    /**
+     * Method that calling update method of all entities.
+     */
     public void update(){
         entityList.forEach(entity -> entity.update(this));
-        //agentsList.forEach(agent -> agent.update(this));
         removeAgent();
     }
 
+    /**
+     * Method that calling display object to render.
+     */
     public void render(){
         display.render(this);
     }
 
+    /**
+     * Method that creating agents demanding by simState.
+     * @param simState
+     */
     public void setSim(SimState simState) {
         for (int i = 0 ; i < simState.getNumberOfHumans() ; i++) {
             Human human = new Human(this, new AgentController());
@@ -67,6 +81,10 @@ public class Sim {
         assignToRegions();
     }
 
+    /**
+     * Method that assign new created agents to regions of map.
+     * Dividing maps for regions optimizes handling of collisions.
+     */
     public void assignToRegions() {
         //initialize regions
         for (int key = 0 ; key < 16 ; key++) {
@@ -83,6 +101,11 @@ public class Sim {
             }
         }
     }
+
+    /**
+     * Methods that adding specific agent to region.
+     * @param agent
+     */
     public void updateRegion(Agent agent) {
         ArrayList<Integer> regionKeys = findRegionKeys(agent);
         for (Integer key : regionKeys) {
@@ -90,6 +113,10 @@ public class Sim {
         }
     }
 
+    /**
+     * Methods that remove specific agent from region.
+     * @param agent
+     */
     public void removeFromRegion(Agent agent) {
         ArrayList<Integer> regionKey = findRegionKeys(agent);
         for (Integer key : regionKey) {
@@ -97,6 +124,12 @@ public class Sim {
         }
     }
 
+    /**
+     * Method that returning key of region of specified row and col number
+     * @param row
+     * @param col
+     * @return
+     */
     public int findRegionKeys(int row, int col) {
         int rowRegion = (int) row / 25;
         int colRegion = (int) col / 25;
@@ -104,6 +137,12 @@ public class Sim {
         return regionKey;
     }
 
+    /**
+     * Method that returning ArrayList keys of region for specific agent.
+     * Agent can belong to multiple regions
+     * @param entity
+     * @return
+     */
     public ArrayList<Integer> findRegionKeys(Entity entity) {
         ArrayList<Integer> regionKeys = new ArrayList<Integer>();
         int regionKey;
@@ -128,6 +167,9 @@ public class Sim {
         return regionKeys;
     }
 
+    /**
+     * Method that clear Entities and map data after simulation.
+     */
     public void resetEntity() {
        ArrayList<Entity> toRemove = new ArrayList<>();
        for (Entity entity : entityList) {
@@ -141,6 +183,11 @@ public class Sim {
        entityInRegions.clear();
        map.resetNodes();
     }
+
+    /**
+     * Method that is removing agents after specified events.
+     * Handling turning into zombie, killing humans and escaping from map.
+     */
     public void removeAgent() {
         for (Human h: zombifiedHumans) {
             agentsList.remove(h);
@@ -231,14 +278,6 @@ public class Sim {
                 if (other.collidesWith(entity) && !other.equals(entity)) collidingList.add(other);
             }
         }
-//        for (Entity other : entityList){
-//            if (other.collidesWith(entity) && !other.equals(entity)) collidingList.add(other);
-//        }
-//        for (Entity other : deadAgents){
-//            if (other.collidesWith(entity) && !other.equals(entity)) collidingList.add(other);
-//        }
-
-
         return collidingList;
     }
 
@@ -248,9 +287,5 @@ public class Sim {
 
     public List<Agent> getDeadAgents() {
         return deadAgents;
-    }
-
-    public void setDeadAgents(List<Agent> deadAgents) {
-        this.deadAgents = deadAgents;
     }
 }

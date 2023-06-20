@@ -61,7 +61,4 @@ public class Position {
         y += motion.getVector().getY();
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
 }
