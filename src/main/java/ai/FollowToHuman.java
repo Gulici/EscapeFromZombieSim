@@ -9,14 +9,25 @@ import core.Position;
 
 import java.util.List;
 
+/**
+ * Path object used by both zombies (to follow to humans in range), and humans(to follow to group leaders).
+ */
 public class FollowToHuman extends FollowPath{
     private Human human_target;
     private int ticksPerPathUpdate = 0;
+    /**
+     * Initializes class
+     * @param target Human to follow.
+     */
     public FollowToHuman(Human target) {
         super();
         human_target = target;
 
     }
+
+    /**
+     * Each 60 ticks updates path to new location of targeted human
+     */
     @Override
     public void update(Agent agent, Sim sim) {
 
@@ -32,12 +43,13 @@ public class FollowToHuman extends FollowPath{
             ((Human)agent).calculateSpeed();
         }
         ticksPerPathUpdate++;
-        
-        //System.out.println(agent.getPosition().getX() + " " + agent.getPosition().getY() + " " + target.getX() + " " + target.getY());
-
         handleMotion(agent);
     }
 
+    /**
+     * Changes followd human
+     * @param target New target.
+     */
     public void setTarget(Human target) {
         human_target = target;
     }

@@ -1,5 +1,8 @@
 package configuration;
 
+/**
+ * Defines global configuration variables for class entity.Zombie
+ */
 public class ZombieConf {
     public static double defaultSpeed;
     public static int damage;

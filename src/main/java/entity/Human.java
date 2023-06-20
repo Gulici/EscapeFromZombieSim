@@ -13,21 +13,35 @@ import core.Group;
 import core.Position;
 import java.awt.*;
 
+/**
+ * Class responsible for Human agents
+ */
 public class Human extends Agent {
 
+    // FollowPath object which agent should follow.
     protected FollowPath followPath;
+    // Group to which agent will belong (at start it's single person group)
     Group group;
+    // Color for drawing agents of this type.
     protected Color color;
+    // Agents speed
     protected double speed;
+    // Agents state can be either: 'FollowPath', 'KnockOver', 'Trampled'or 'Zombified'
     private String state;
     private int knockOverCounter;
     private int pushCounter;
-    private boolean alive = true;
+    // Tick counter
     private int ticks = 0;
+    // Counts how many humans changed to zombies.
     public static int changed = 0;
     protected Sim sim;
     protected int hp;
+    // Number of ticks for poisoned human to change into zombie.
     private int zombificationCounter = 60;
+
+    /**
+     * Simple entity constructor placing entity at random position
+     */
     public Human(Sim sim, EntityController entityController) {
         super(entityController);
         setSize(new Size(6,6));
@@ -38,6 +52,9 @@ public class Human extends Agent {
         this.sim = sim;
     }
 
+    /**
+     * Initializes state of entity
+     */
     protected void initializeState() {
         color = Color.CYAN;
         pushCounter = 0;
@@ -48,15 +65,25 @@ public class Human extends Agent {
         followPath = new FollowPathToExit();
     }
 
-
+    /**
+     * @return true if entity has been poisoned.
+     */
     public boolean isZombified() {
         return state == "Zombified";
     }
 
+    /**
+     * Applies damage to the group to which the entity belongs.
+     * @param total_damage maximum damage that with which attacking entity might attack (damage is chose randomly from 0 to this value)
+     */
     public void damage(int total_damage) {
         this.group.damage(total_damage);
     }
 
+    /**
+     * Decreases hp by part of the damage that got applied to the group.
+     * @param damage Damage applied to this Entity
+     */
     public void decreaseHP(int damage) {
         hp -= damage;
         if (hp < 0) {
@@ -68,7 +95,9 @@ public class Human extends Agent {
         }
     }
 
-
+    /**
+     * Calculates new speed for entity so that when group leader is to far it slows down
+     */
     public void calculateSpeed() {
         Position mean = group.meanPosition();
         double distance = this.getCenterPosition().distanceTo(mean);
@@ -89,6 +118,7 @@ public class Human extends Agent {
         switch (state) {
             case "FollowPath" -> {
                 if (followPath instanceof FollowToHuman) {
+                    // We want to make sure that the leader of group is current target.
                     ((FollowToHuman)followPath).setTarget(group.first());
                 }
                 followPath.update(this, sim);
@@ -97,10 +127,10 @@ public class Human extends Agent {
             case "KnockOver" -> {
             }
             case "Trampled" -> {
-                alive = false;
                 sim.addToKillList(this);
             }
             case "Zombified" -> {
+                // When human is poisoned they still act like human till zombificationCounter reaches 0
                 if (followPath instanceof FollowToHuman) {
                     ((FollowToHuman)followPath).setTarget(group.first());
                 }
@@ -110,20 +140,30 @@ public class Human extends Agent {
         }
     }
 
+    /**
+     * Resets path of entity to their default behaviour.
+     */
     public void resetPath() {
         this.speed = HumanConf.defaultSpeed;
         motion = new Motion(speed);
         followPath = new FollowPathToExit();
     }
 
+    /**
+     * @return Returns whether entity was knocked over.
+     */
     public boolean isKnockedOver() {
         return state == "KnockOver";
     }
 
+    /**
+     * Handles possible changes in state of entity.
+     */
     private void updateState() {
         switch (state) {
             case "FollowPath" -> {
                 if (pushCounter >= 5) {
+                    // If entity was pushed more than 4 times it changes state to "KnockOver"
                     state = "KnockOver";
                     knockOverCounter = 60;
                     color = Color.YELLOW;
@@ -131,6 +171,7 @@ public class Human extends Agent {
             }
             case "KnockOver" -> {
                 if (pushCounter >= 20) {
+                    // If entity was pushed more than 19 times it changes state to "Trampled"
                     state = "Trampled";
                     group.remove(this);
                     break;
@@ -139,17 +180,17 @@ public class Human extends Agent {
                     knockOverCounter --;
                 }
                 else {
+                    // If knockOverCounter reaches 0 and entity wasn't Trampled it returns to following path
                     state = "FollowPath";
                     pushCounter = 0;
                     color = Color.cyan;
                 }
             }
             case "Zombified" -> {
+                // When entity is zombified it decreases zombificationCounter and after it reaches 0 it changes to zombie.
                 zombificationCounter--;
                 if (zombificationCounter == 0) {
-                    System.out.println("Changed to zombie");
                     changed++;
-                    System.out.println(changed);
                     sim.addToZombifiedList(this);
                 }
             }
@@ -157,6 +198,9 @@ public class Human extends Agent {
         }
     }
 
+    /**
+     * Handling collisions for grouping, knocking over and attacking zombies.
+     */
     @Override
     public void handleCollision(Entity other, Sim sim) {
         super.handleCollision(other, sim);
@@ -183,10 +227,16 @@ public class Human extends Agent {
         }
     }
 
-
+    /**
+     * @param g Group to change.
+     */
     public void setGroup(Group g) {
         group = g;
     }
+
+    /**
+     * @return Group to which entity belongs.
+     */
     public Group getGroup() {
         return group;
     }
@@ -195,12 +245,6 @@ public class Human extends Agent {
     public void draw(Graphics2D graphics2D) {
         graphics2D.setColor(color);
         graphics2D.fillRect(getCenterPosition().intX(), getCenterPosition().intY(), size.getWidth(), size.getHeight());
-        //if (this == group.first()) {
-        //    graphics2D.setColor(Color.GREEN);
-        //    Position p = group.meanPosition();
-        //    graphics2D.fillRect(p.intX(), p.intY(), size.getWidth(), size.getHeight());
-        //}
-
     }
 
     public void increasePushCounter() {
@@ -211,9 +255,6 @@ public class Human extends Agent {
         return followPath.getLength();
     }
 
-    public boolean isAlive(){
-        return alive;
-    }
     public void kill() {
         group.remove(this);
     }

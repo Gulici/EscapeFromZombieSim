@@ -192,7 +192,12 @@ public class Sim {
         return entityList;
     }
 
+    /**
+     * In each tick we want to check if there are any matching targets for each zombie.
+     * @param zombie zombie to check
+     */
     public void chaseInRangeEntities(Zombie zombie) {
+        // Finding regions that might be in range
         int range = ZombieConf.range;
         int row = zombie.getPosition().getRow();
         int col = zombie.getPosition().getCol();
@@ -204,17 +209,16 @@ public class Sim {
                 if(j < 100 && i < 100 && j >=0 && i >=0)
                     regions.add(findRegionKeys(j, i));
             }
-        //System.out.println(regions);
 
+        // Checking if it's possible to start chasing any of the Humans in regions.
         for (Integer key : regions) {
             for (Entity other : entityInRegions.get(key)) {
                 if(zombie.start_chasing(other))
                     return;
             }
         }
+        // If zombie does not have target in range or it lost it's target we want to reset  it's behaviour to default.
         zombie.resetPath();
-//        for (Entity other : entityList){
-
     }
 
     public List<Entity> getCollidingEntities(Entity entity){
