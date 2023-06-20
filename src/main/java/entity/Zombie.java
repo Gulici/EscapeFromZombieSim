@@ -25,7 +25,7 @@ public class Zombie extends Human {
     protected void initializeState() {
         this.speed = ZombieConf.defaultSpeed;
         this.motion = new Motion(this.speed);
-        hp = 1000;
+        hp = ZombieConf.hp;
         followPath = new FollowPathToRandomPos();
     }
 

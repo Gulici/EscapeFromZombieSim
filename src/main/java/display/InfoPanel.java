@@ -17,7 +17,7 @@ public class InfoPanel extends JPanel implements ActionListener {
     SimState simState;
     Dimension dimension;
     JButton startButton, stopButton, setButton;
-    JSlider zombieDamage, humanHP, damageToChange, humanSpeed, zombieSpeed, zombieRange, humanDamage, zombieHP;
+    JSlider zombieDamage, humanHP, damageToChange, humanSpeed, zombieSpeed, zombieRange, humanDamage, zombieHP, numberOfHumans, numberOfZombies;
     JCheckBox showZombieRange, showZombiePath;
 
     public InfoPanel (Sim sim, Input input, SimState simState) {
@@ -55,6 +55,17 @@ public class InfoPanel extends JPanel implements ActionListener {
         setButton.setText("Set");
         setButton.setEnabled(true);
         add(setButton);
+
+         JLabel numberOfHumansLabel = new JLabel("Number of humans");
+        //zombieDamageLabel.setBounds(10, 190, 200, 50);
+        add(numberOfHumansLabel);
+        numberOfHumans = new JSlider(0, 100, 100);
+        numberOfHumans.setVisible(true);
+        //zombieDamage.setBounds(10,250, 200, 50);
+        numberOfHumans.setEnabled(true);
+        numberOfHumans.setPaintLabels(true);
+        numberOfHumans.setLabelTable(numberOfHumans.createStandardLabels(10));
+        add(numberOfHumans);
 
         JLabel zombieDamageLabel = new JLabel("Damage implied by zombie");
         //zombieDamageLabel.setBounds(10, 190, 200, 50);
@@ -196,6 +207,8 @@ public class InfoPanel extends JPanel implements ActionListener {
             HumanConf.damageToChange = damageToChange.getValue();
             HumanConf.defaultSpeed = (double)humanSpeed.getValue()/10;
             HumanConf.damage = humanDamage.getValue();
+
+            simState.numberOfHumans = numberOfHumans.getValue();
             simState.setSetSim(true);
 
             startButton.setEnabled(true);
