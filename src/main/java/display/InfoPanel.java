@@ -67,6 +67,17 @@ public class InfoPanel extends JPanel implements ActionListener {
         numberOfHumans.setLabelTable(numberOfHumans.createStandardLabels(10));
         add(numberOfHumans);
 
+         JLabel numberOfZombiesLabel = new JLabel("Number of zombies");
+        //zombieDamageLabel.setBounds(10, 190, 200, 50);
+        add(numberOfZombiesLabel);
+        numberOfZombies = new JSlider(0, 100, 20);
+        numberOfZombies.setVisible(true);
+        //zombieDamage.setBounds(10,250, 200, 50);
+        numberOfZombies.setEnabled(true);
+        numberOfZombies.setPaintLabels(true);
+        numberOfZombies.setLabelTable(numberOfZombies.createStandardLabels(10));
+        add(numberOfZombies);
+
         JLabel zombieDamageLabel = new JLabel("Damage implied by zombie");
         //zombieDamageLabel.setBounds(10, 190, 200, 50);
         add(zombieDamageLabel);
@@ -209,6 +220,7 @@ public class InfoPanel extends JPanel implements ActionListener {
             HumanConf.damage = humanDamage.getValue();
 
             simState.numberOfHumans = numberOfHumans.getValue();
+            simState.numberOfZombies = numberOfZombies.getValue();
             simState.setSetSim(true);
 
             startButton.setEnabled(true);
