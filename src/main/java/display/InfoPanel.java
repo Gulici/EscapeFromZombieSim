@@ -41,7 +41,6 @@ public class InfoPanel extends JPanel implements ActionListener {
         stopButton = new JButton();
         stopButton.setMaximumSize(new Dimension(100, 30));
         stopButton.setVisible(true);
-        //stopButton.setBounds(10,70, 100, 50);
         stopButton.addActionListener(this);
         stopButton.setText("Stop");
         stopButton.setEnabled(false);
@@ -50,58 +49,48 @@ public class InfoPanel extends JPanel implements ActionListener {
         setButton = new JButton();
         setButton.setMaximumSize(new Dimension(100, 30));
         setButton.setVisible(true);
-        //setButton.setBounds(10,130, 100, 50);
         setButton.addActionListener(this);
         setButton.setText("Set");
         setButton.setEnabled(true);
         add(setButton);
 
          JLabel numberOfHumansLabel = new JLabel("Number of humans");
-        //zombieDamageLabel.setBounds(10, 190, 200, 50);
         add(numberOfHumansLabel);
         numberOfHumans = new JSlider(0, 100, 100);
         numberOfHumans.setVisible(true);
-        //zombieDamage.setBounds(10,250, 200, 50);
         numberOfHumans.setEnabled(true);
         numberOfHumans.setPaintLabels(true);
         numberOfHumans.setLabelTable(numberOfHumans.createStandardLabels(10));
         add(numberOfHumans);
 
-         JLabel numberOfZombiesLabel = new JLabel("Number of zombies");
-        //zombieDamageLabel.setBounds(10, 190, 200, 50);
+        JLabel numberOfZombiesLabel = new JLabel("Number of zombies");
         add(numberOfZombiesLabel);
         numberOfZombies = new JSlider(0, 100, 20);
         numberOfZombies.setVisible(true);
-        //zombieDamage.setBounds(10,250, 200, 50);
         numberOfZombies.setEnabled(true);
         numberOfZombies.setPaintLabels(true);
         numberOfZombies.setLabelTable(numberOfZombies.createStandardLabels(10));
         add(numberOfZombies);
 
         JLabel zombieDamageLabel = new JLabel("Damage implied by zombie");
-        //zombieDamageLabel.setBounds(10, 190, 200, 50);
         add(zombieDamageLabel);
         zombieDamage = new JSlider(0, 1000, 300);
         zombieDamage.setVisible(true);
-        //zombieDamage.setBounds(10,250, 200, 50);
         zombieDamage.setEnabled(true);
         zombieDamage.setPaintLabels(true);
         zombieDamage.setLabelTable(zombieDamage.createStandardLabels(200));
         add(zombieDamage);
 
         JLabel humanDamageLabel = new JLabel("Damage implied by human");
-        //humanDamageLabel.setBounds(10, 190, 200, 50);
         add(humanDamageLabel);
         humanDamage = new JSlider(0, 1000, 300);
         humanDamage.setVisible(true);
-        //humanDamage.setBounds(10,250, 200, 50);
         humanDamage.setEnabled(true);
         humanDamage.setPaintLabels(true);
         humanDamage.setLabelTable(humanDamage.createStandardLabels(200));
         add(humanDamage);
         
         JLabel humanHPLabel = new JLabel("Human HP");
-        //humanHPLabel.setBounds(10, 310, 200, 50);
         add(humanHPLabel);
         humanHP = new JSlider(1, 1000, 1000);
         humanHP.setVisible(true);
@@ -111,8 +100,7 @@ public class InfoPanel extends JPanel implements ActionListener {
         humanHP.setLabelTable(humanHP.createStandardLabels(200));
         add(humanHP);
 
-         JLabel zombieHPLabel = new JLabel("Zombie HP");
-        //humanHPLabel.setBounds(10, 310, 200, 50);
+        JLabel zombieHPLabel = new JLabel("Zombie HP");
         add(zombieHPLabel);
         zombieHP = new JSlider(1, 1000, 1000);
         zombieHP.setVisible(true);
@@ -177,20 +165,10 @@ public class InfoPanel extends JPanel implements ActionListener {
         add(showZombiePath);
     }
 
-//    public void paintComponent (Graphics graphics) {
-//        super.paintComponent(graphics);
-//        Graphics2D graphics2D = (Graphics2D) graphics;
-//
-//
-//
-//        graphics2D.dispose();
-//    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
         if(e.getSource().equals(startButton)) {
-            //Zombie.setDefaultSpeed((double)zombieSpeed.getValue()/10);
             simState.setRunning(true);
 
             stopButton.setEnabled(true);

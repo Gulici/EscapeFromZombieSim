@@ -45,11 +45,6 @@ public abstract class Agent extends Entity{
             //push him
             ((Human) other).increasePushCounter();
             motion.stop(this.willCollideX(other.getCollisionBox()), this.willCollideY(other.getCollisionBox()));
-//          /*
-//          tutaj jest problem, z jakiegos powodu dziala na odwrot
-//          być może
-//           */
-
         }
         if (other instanceof DeadHuman) {
             motion.slow();

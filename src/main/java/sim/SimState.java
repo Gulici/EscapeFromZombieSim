@@ -12,9 +12,7 @@ public class SimState {
     private boolean reset = false;
     private boolean wasReset = false;
 
-    public SimState() {
-
-    }
+    public SimState() {}
 
     public int getNumberOfHumans() {
         return numberOfHumans;
@@ -22,10 +20,6 @@ public class SimState {
 
     public int getNumberOfZombies() {
         return numberOfZombies;
-    }
-
-    public void setNumberOfHumans(int numberOfHumans) {
-        this.numberOfHumans = numberOfHumans;
     }
 
     public boolean isRunning() {
@@ -49,21 +43,5 @@ public class SimState {
 
     public void setWasStopped(boolean wasStopped) {
         this.wasStopped = wasStopped;
-    }
-
-    public boolean isReset() {
-        return reset;
-    }
-
-    public void setReset(boolean reset) {
-        this.reset = reset;
-    }
-
-    public boolean isWasReset() {
-        return wasReset;
-    }
-
-    public void setWasReset(boolean wasReset) {
-        this.wasReset = wasReset;
     }
 }

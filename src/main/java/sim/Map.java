@@ -1,17 +1,14 @@
 package sim;
 
 import ai.AStar;
-import ai.Dijkstra;
 import core.MapReader;
 import core.Node;
 import core.Position;
-import entity.Entity;
 import entity.Exit;
 import entity.Wall;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class Map {

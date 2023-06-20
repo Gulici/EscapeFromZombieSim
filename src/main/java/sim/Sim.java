@@ -1,7 +1,6 @@
 package sim;
 
 import controller.AgentController;
-import controller.ManualController;
 import display.Display;
 import entity.*;
 import input.Input;
@@ -45,7 +44,6 @@ public class Sim {
 
     public void update(){
         entityList.forEach(entity -> entity.update(this));
-        //agentsList.forEach(agent -> agent.update(this));
         removeAgent();
     }
 
@@ -231,14 +229,6 @@ public class Sim {
                 if (other.collidesWith(entity) && !other.equals(entity)) collidingList.add(other);
             }
         }
-//        for (Entity other : entityList){
-//            if (other.collidesWith(entity) && !other.equals(entity)) collidingList.add(other);
-//        }
-//        for (Entity other : deadAgents){
-//            if (other.collidesWith(entity) && !other.equals(entity)) collidingList.add(other);
-//        }
-
-
         return collidingList;
     }
 
@@ -248,9 +238,5 @@ public class Sim {
 
     public List<Agent> getDeadAgents() {
         return deadAgents;
-    }
-
-    public void setDeadAgents(List<Agent> deadAgents) {
-        this.deadAgents = deadAgents;
     }
 }
