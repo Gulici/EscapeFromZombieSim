@@ -1,5 +1,8 @@
 package sim;
 
+/**
+ * Class that is responsible for running of simulation.
+ */
 public class SimLoop implements Runnable {
     Sim sim;
     SimState simState;
@@ -16,6 +19,10 @@ public class SimLoop implements Runnable {
         thread.start();
     }
 
+    /**
+     * Implementation of delta time accumulation method.
+     * This method cut maximum count of updates to demanding number.
+     */
     @Override
     public void run() {
         long lastTime = System.nanoTime();

@@ -5,6 +5,9 @@ import sim.Sim;
 
 import java.awt.*;
 
+/**
+ * Class responsible for wall entities.
+ */
 public class Wall extends Entity{
 
     public Wall() {

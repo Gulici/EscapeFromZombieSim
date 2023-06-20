@@ -11,6 +11,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Abstract class for all entities that can move.
+ */
 public abstract class Agent extends Entity{
     protected EntityController entityController;
     protected Motion motion;
@@ -29,15 +32,32 @@ public abstract class Agent extends Entity{
         apply(motion);
         sim.updateRegion(this);
     }
+
+    /**
+     * Method that handle motion.
+     */
     protected void handleMotion(){
         motion.update(entityController);
     }
 
+    /**
+     * Method that handle agents behavior during collision with wall entity.
+     * @param other
+     * @param sim
+     */
     protected void handleWallCollision(Entity other, Sim sim) {
         if(other instanceof Wall ) {
             motion.stop(willCollideX(other.getCollisionBox()), willCollideY(other.getCollisionBox()));
         }
     }
+
+    /**
+     * Method that handle agents behavior during collision with other entities.
+     * While agent colliding with Human increase their push counter and stop the motion.
+     * If agent colliding with DeadHuman slow the motion.
+     * @param other
+     * @param sim
+     */
     protected void handleCollision(Entity other, Sim sim){
         handleWallCollision(other, sim);
 
@@ -50,6 +70,11 @@ public abstract class Agent extends Entity{
             motion.slow();
         }
     }
+
+    /**
+     * Method that handle all collisions.
+     * @param sim
+     */
     protected void handleCollisions(Sim sim){
         List<Entity> collidingEntities = sim.getCollidingEntities(this);
 
@@ -57,21 +82,27 @@ public abstract class Agent extends Entity{
             this.handleCollision(other, sim);
         }
     }
+
+    /**
+     * @param other
+     * @return true if entity's collision box intersects with collision box of other
+     */
     @Override
     public boolean collidesWith(Entity other) {
         return this.getCollisionBox().collidesWith(other.getCollisionBox());
     }
 
-    public void pushHuman (Human other) {
-        other.increasePushCounter();
-    }
     public void apply(Motion motion) {
         position.apply(motion);
     }
+
     public EntityController getEntityController(){
         return entityController;
     }
 
+    /**
+     * @return predicted collision box after demanding move.
+     */
     @Override
     public CollisionBox getCollisionBox() {
         Position predictPosition = Position.copyOf(position);
@@ -85,6 +116,10 @@ public abstract class Agent extends Entity{
         );
     }
 
+    /**
+     * @param otherBox
+     * @return true if agent's collision box will collide after move in X axis
+     */
     public boolean willCollideX(CollisionBox otherBox){
         Position positionPredictX = Position.copyOf(position);
         positionPredictX.applyX(motion);
@@ -97,6 +132,11 @@ public abstract class Agent extends Entity{
         );
         return predictCollisionBox.collidesWith(otherBox);
     }
+
+    /**
+     * @param otherBox
+     * @return true if agent's collision box will collide after move in Y axis
+     */
     public boolean willCollideY(CollisionBox otherBox){
         Position positionPredictY = Position.copyOf(position);
         positionPredictY.applyY(motion);

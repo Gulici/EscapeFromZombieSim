@@ -29,6 +29,18 @@ import sim.Map;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that implements AStar algorithm for finding the closest path.
+ * Algorithm working while open list is not empty or target node was found.
+ * Every analyzed node have its own gCost, and hCost.
+ * gCost its cost of move - sum of travel distance.
+ * hCost its heuristic approximation of remaining travel distance, in this example it is simple euclidean distance.
+ * fCost is sum of gCost and hCost.
+ * Algorithm in first place choose node with lowest fCost from Open and analyze its neighbours.
+ * After that adding current node to Closed list and adding neighbours to Open.
+ * If neighbour is in Closed or Open it is checking if new fCost will be lower than current.
+ * If yes, change its costs and add to Open in case it is in Closed.
+ */
 public class AStar {
     private List<Node> open;
     private List<Node> closed;
@@ -44,6 +56,14 @@ public class AStar {
         this.rowNum = map.getRowNum();
         this.colNum = map.getColNum();
     }
+
+    /**
+     * Method that is calculating closest path between two specified positions.
+     * Returning true if the path was found.
+     * @param start
+     * @param target
+     * @return
+     */
     public boolean findPath(Position start, Position target){
         path = new ArrayList<>();
         open = new ArrayList<>();
@@ -133,6 +153,11 @@ public class AStar {
         return false;
     }
 
+    /**
+     * Method that assign the closest paths from right exit to every tile of map.
+     * @param map
+     * @param target
+     */
     /*
     startujemy od wyjścia
     szukamy sąsiadów, ustawiamy child.parent na current;
@@ -201,6 +226,11 @@ public class AStar {
         }
     }
 
+    /**
+     * Method that assign the closest paths from left exit to every tile of map.
+     * @param map
+     * @param target
+     */
     public void findPathFromLeftExit(Map map, Position target) {
         Node start = map.getNode(target);
         start.setGCost(0);
@@ -263,6 +293,11 @@ public class AStar {
     }
 
 
+    /**
+     * Method that is analyzing data from AStar to find the closest path.
+     * After finding the target node it's adding every parent node to path including target and start.
+     * @param target
+     */
     private void analyzePath(Node target){
         if(target.getParent() == null){
             path = null;
@@ -276,6 +311,14 @@ public class AStar {
             } while (node.getParent() != null && node != target);
         }
     }
+
+    /**
+     * Methods that's adding analyzed neighbour node to open list.
+     * Set costs of move to node.
+     * @param child
+     * @param gCost
+     * @param hCost
+     */
     private void addToOpen(Node child, double gCost, double hCost){
         child.setGCost(gCost);
         child.setHCost(hCost);
@@ -285,33 +328,17 @@ public class AStar {
     public Node findNodeByPosition(Position position){
         int x = position.intX();
         int y = position.intY();
-        //Node wantedNode = new Node(nodeSize);
-
-        // for(ArrayList<Node> nodeRow : nodeList){
-        //     for(Node node : nodeRow){
-        //         if (x >= node.getPosition().intX() &&
-        //                 x < (node.getPosition().intX() + nodeSize) &&
-        //                 y >= node.getPosition().intY() &&
-        //                 y < (node.getPosition().getY() + nodeSize)) {
-        //             wantedNode = node;
-        //             break;
-        //         }
-        //     }
-        // }
-        //System.out.println(nodeList.get(y/10).get(x/10) + " " + wantedNode.getCenterPosition());
         return nodeList.get(y/10).get(x/10);
     }
     public Node findNodeByRowCol(int row, int col){
         return nodeList.get(row).get(col);
-        //for (ArrayList<Node> nodes : nodeList) {
-        //    for (Node node : nodes) {
-        //        if (node.getRow() == row && node.getCol() == col) {
-        //           return node;
-        //        }
-        //    }
-        //}
-        //return null;
     }
+
+    /**
+     * Method that returning list of traversable neighbour nodes of specified node.
+     * @param node
+     * @return
+     */
     public ArrayList<Node> neighbourNodes(Node node){
         ArrayList<Node> neighbourNodes = new ArrayList<>();
 
@@ -329,14 +356,24 @@ public class AStar {
 
         return neighbourNodes;
     }
+
+    /**
+     * @param row
+     * @param col
+     * @param rowNum
+     * @param colNum
+     * @return true if demanding tile is in bands of map.
+     */
     public boolean isInBands(int row, int col, int rowNum, int colNum){
         return row >= 0 && row <= rowNum && col >= 0 && col < colNum;
     }
     public ArrayList<Position> getPath() {
-        
         return path;
     }
 
+    /**
+     * Methods that's reset nodes after pathfinding.
+     */
     public void clearNodes(){
         for (ArrayList<Node> nodes : nodeList) {
             

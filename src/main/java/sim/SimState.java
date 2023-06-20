@@ -1,8 +1,9 @@
 package sim;
 
-/*
-    Class that's handle settings of simulation
+/**
+ * Class that's handle settings of simulation
  */
+
 public class SimState {
     public int numberOfHumans = 100;
     public int numberOfZombies = 20;

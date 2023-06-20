@@ -5,6 +5,9 @@ import sim.Sim;
 
 import java.awt.*;
 
+/**
+ * Class that is responsible for dead humans.
+ */
 public class DeadHuman extends Agent{
     public DeadHuman(EntityController entityController) {
         super(entityController);

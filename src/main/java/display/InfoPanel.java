@@ -1,10 +1,9 @@
 package display;
 
-import input.Input;
 import sim.Sim;
 import sim.SimState;
-import configuration.HumanConf;
-import configuration.ZombieConf;
+import sim.configuration.HumanConf;
+import sim.configuration.ZombieConf;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +11,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Hashtable;
 
+/**
+ * Panel that contain components for management of simulation settings.
+ */
 public class InfoPanel extends JPanel implements ActionListener {
     Sim sim;
     SimState simState;
@@ -20,7 +22,7 @@ public class InfoPanel extends JPanel implements ActionListener {
     JSlider zombieDamage, humanHP, damageToChange, humanSpeed, zombieSpeed, zombieRange, humanDamage, zombieHP, numberOfHumans, numberOfZombies;
     JCheckBox showZombieRange, showZombiePath;
 
-    public InfoPanel (Sim sim, Input input, SimState simState) {
+    public InfoPanel (Sim sim, SimState simState) {
         this.sim = sim;
         this.simState = simState;
         dimension = new Dimension(250,sim.getMap().getMapHeight());

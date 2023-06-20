@@ -8,6 +8,9 @@ import sim.Sim;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Child class that handle motion to exit, used by Humans.
+ */
 public class FollowPathToExit extends FollowPath {
     @Override
     public void update(Agent agent, Sim sim) {

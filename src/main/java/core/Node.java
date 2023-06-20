@@ -115,4 +115,5 @@ public class Node {
     public void setPathToExitRight(ArrayList<Position> pathToExitRight) {
         this.pathToExitRight = pathToExitRight;
     }
+
 }

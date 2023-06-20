@@ -9,6 +9,11 @@ import java.awt.*;
 import java.util.List;
 
 
+/**
+ * Abstract class that is parent for all types of entities.
+ * Each instances of Entity need to have fields: Position, Size;
+ * and implementation of methods: update(), draw(), collidesWith();
+ */
 public abstract class Entity {
     protected Position position;
     protected Size size;
@@ -21,6 +26,9 @@ public abstract class Entity {
     public abstract void draw(Graphics2D graphics2D);
     public abstract boolean collidesWith(Entity entity);
 
+    /**
+     * @return collision box of entity.
+     */
     public CollisionBox getCollisionBox() {
         {
             return new CollisionBox(
@@ -31,6 +39,10 @@ public abstract class Entity {
             );
         }
     }
+
+    /**
+     * @return center position of entity.
+     */
     public Position getCenterPosition() {
         int x = getPosition().intX() + getSize().getWidth()/2;
         int y = getPosition().intY() + getSize().getHeight()/2;
@@ -40,6 +52,7 @@ public abstract class Entity {
     public void setPosition(Position position) {
         this.position = position;
     }
+
     public void setSize(Size size) {
         this.size = size;
     }
