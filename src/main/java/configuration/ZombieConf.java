@@ -6,4 +6,5 @@ public class ZombieConf {
     public static int range;
     public static boolean showRange;
     public static boolean showPath;
+    public static int hp;
 }

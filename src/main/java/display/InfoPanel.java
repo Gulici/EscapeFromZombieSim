@@ -17,7 +17,7 @@ public class InfoPanel extends JPanel implements ActionListener {
     SimState simState;
     Dimension dimension;
     JButton startButton, stopButton, setButton;
-    JSlider zombieDamage, humanHP, damageToChange, humanSpeed, zombieSpeed, zombieRange, humanDamage;
+    JSlider zombieDamage, humanHP, damageToChange, humanSpeed, zombieSpeed, zombieRange, humanDamage, zombieHP;
     JCheckBox showZombieRange, showZombiePath;
 
     public InfoPanel (Sim sim, Input input, SimState simState) {
@@ -88,6 +88,17 @@ public class InfoPanel extends JPanel implements ActionListener {
         humanHP.setPaintLabels(true);
         humanHP.setLabelTable(humanHP.createStandardLabels(200));
         add(humanHP);
+
+         JLabel zombieHPLabel = new JLabel("Zombie HP");
+        //humanHPLabel.setBounds(10, 310, 200, 50);
+        add(zombieHPLabel);
+        zombieHP = new JSlider(1, 1000, 1000);
+        zombieHP.setVisible(true);
+        zombieHP.setBounds(10, 370, 200, 50);
+        zombieHP.setEnabled(true);
+        zombieHP.setPaintLabels(true);
+        zombieHP.setLabelTable(zombieHP.createStandardLabels(200));
+        add(zombieHP);
 
         JLabel damageToChangeLabel = new JLabel("Minimum damage at once to change poison human");
         damageToChangeLabel.setBounds(10, 430, 200, 50);
@@ -179,6 +190,7 @@ public class InfoPanel extends JPanel implements ActionListener {
             ZombieConf.range = zombieRange.getValue();
             ZombieConf.showRange = showZombieRange.isSelected();
             ZombieConf.showPath = showZombiePath.isSelected();
+            ZombieConf.hp = zombieHP.getValue();
 
             HumanConf.hp = humanHP.getValue();
             HumanConf.damageToChange = damageToChange.getValue();
